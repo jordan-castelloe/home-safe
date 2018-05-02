@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     phone_number: DataTypes.STRING
   }, {});
   Emergency_Contact.associate = function(models) {
-    Emergency_Contact.belongsToMany(models.User, {
+    Emergency_Contact.belongsTo(models.User, {
       foreignKey: 'user_id'
     });
   };

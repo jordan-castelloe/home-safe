@@ -1,22 +1,20 @@
 {
   "development": {
-    "username": "jordan",
-    "password": "postgres",
-    "database": "database_development",
+    "database": "homesafe",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
   "test": {
     "username": "jordan",
     "password": "postgres",
-    "database": "database_test",
+    "database": "homesafe",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
   "production": {
     "username": "jordan",
     "password": "postgres",
-    "database": "database_production",
+    "database": "homesafe",
     "host": "127.0.0.1",
     "dialect": "postgres"
   }

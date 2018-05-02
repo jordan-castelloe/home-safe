@@ -5,9 +5,9 @@ module.exports = (sequelize, DataTypes) => {
     last_name: DataTypes.STRING,
     email: DataTypes.STRING,
     password: DataTypes.STRING,
-    safe_code: DataTypes.NUMBER,
-    emergency_code: DataTypes.NUMBER,
-    message_count: DataTypes.NUMBER
+    safe_code: DataTypes.INTEGER,
+    emergency_code: DataTypes.INTEGER,
+    message_count: DataTypes.INTEGER
   }, {});
   User.associate = function(models) {
     User.hasMany(models.Emergency_Contact, {
