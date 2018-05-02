@@ -21,13 +21,13 @@ module.exports = {
         type: Sequelize.STRING
       },
       safe_code: {
-        type: Sequelize.NUMBER
+        type: Sequelize.INTEGER
       },
       emergency_code: {
-        type: Sequelize.NUMBER
+        type: Sequelize.INTEGER
       },
       message_count: {
-        type: Sequelize.NUMBER
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
