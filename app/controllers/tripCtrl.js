@@ -9,3 +9,11 @@ module.exports.displayTripScreen= (req, res, next) => {
 module.exports.displayTripForm = (req, res, next) => {
   res.render('trip-form');
 }
+
+// starts timer
+// renders timer
+// renders space for passcode
+module.exports.startTrip = (req, res, next) => {
+  // start timer
+  res.render('trip-in-progress');
+}
