@@ -10,6 +10,7 @@ router.use(checkAuth);
 
 // Mount all trip-related routes
 router.use('/trip', require('./tripRouter'));
+router.use('/contacts', require('./contactsRouter'));
 
 
 module.exports = router;

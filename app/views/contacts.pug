@@ -1,0 +1,10 @@
+extends index
+block content 
+  h1 Emergency Contacts
+  if contactArray
+    each contact in contactArray
+      p=contact.name
+      p=contact.phone_number
+      button Edit 
+      button Delete
+
