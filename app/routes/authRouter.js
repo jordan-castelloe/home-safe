@@ -2,12 +2,14 @@
 
 const { Router } = require('express');
 const authRouter = Router();
-const { displayRegister, register, displayLogin, login, displayWelcome, logout} = require('../controllers/authCtrl');
+const { displayRegister, register, displayContactsForm, addEmergencyContacts, displayLogin, login, displayWelcome, logout} = require('../controllers/authCtrl');
 const checkAuth = require('./checkAuth');
 
 // New users
 authRouter.get('/register', displayRegister);
 authRouter.post('/register', register);
+authRouter.get('/register/contacts', displayContactsForm);
+authRouter.post('/register/contacts', addEmergencyContacts);
 
 // Login existing users
 authRouter.get('/login', displayLogin);

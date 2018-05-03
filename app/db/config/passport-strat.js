@@ -51,7 +51,9 @@ const RegistrationStrategy = new Strategy(
             password: userPassword,
             username: req.body.username,
             first_name: req.body.first_name,
-            last_name: req.body.last_name
+            last_name: req.body.last_name,
+            safe_code: req.body.safe_code,
+            emergency_code: req.body.emergency_code
           };
         // create() is a Sequelize method
         User.create(data).then((newUser, created) => {

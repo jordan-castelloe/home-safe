@@ -1,0 +1,12 @@
+extends index
+block content 
+
+  h1 Add Your Emergency Contact
+  form(name="emergency-contacts" method="post" action="/register/contacts")
+    h2 Emergency Contact #1 
+    label(for="name") Name
+    input(name="name" type="text" required)
+    label(for="phone_number") Phone Number
+    input(name="phone_number" type="tel" required)
+
+    input.btn(type="submit" value="Add")
