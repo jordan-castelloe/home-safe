@@ -1,8 +1,9 @@
 const { Router } = require('express');
 const tripRouter = Router();
-const { displayTripScreen } = require('../controllers/tripCtrl');
+const { displayTripScreen, displayTripForm } = require('../controllers/tripCtrl');
 
 tripRouter.get('/', displayTripScreen);
+tripRouter.get('/start', displayTripForm);
 
 module.exports = tripRouter;
 

@@ -1,0 +1,12 @@
+extends index
+block content 
+    
+  h1 Start a New Trip
+  form(name="register" method="post" action="/register")
+    label(for="location") Where are you going?
+    input.text(id="first_name" name="first_name" type="text" required)
+    label(for="activity") What will you be doing?
+    input.text(name="last_name" type="text" required)
+    label(for="return_time") How long should it take?
+    input.text(name="email" type="time" required);
+    input.btn(type="submit" value="Start Trip")
