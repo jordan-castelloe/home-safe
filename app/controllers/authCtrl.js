@@ -66,7 +66,12 @@ module.exports.displayContactsForm = (req, res, next) => {
 // Called on a POST request to register/ contacts (i.e. when the user clicks 'Add' to add a new emergency contact)
 module.exports.addEmergencyContacts = (req, res, next) => {
   const { Emergency_Contact } = req.app.get("models");
-  const newContact = req.body;
+
+  const newContact = { 
+    name: req.body.name,
+    phone_number: req.body.phone_number
+  }
+  
   console.log('new contact in authCtrl', newContact);
   Emergency_Contact.create(newContact)
   .then(() => {
