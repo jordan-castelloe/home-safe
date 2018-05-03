@@ -2,7 +2,6 @@
 
 const { Router } = require('express');
 const authRouter = Router();
-const checkAuth = require('./checkAuth');
 const { displayRegister, register, displayLogin, login, displayWelcome, logout} = require('../controllers/authCtrl');
 
 // New users

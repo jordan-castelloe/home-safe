@@ -45,18 +45,18 @@ module.exports.login = (req, res, next) => {
     req.logIn(user, err => {
       if (err) { return next(err) }
       req.flash('welcomeBackMsg', `Welcome back, `);
-      res.redirect('/');
+      res.redirect('/welcome');
     });
   })(req, res, next);
 };
 
 module.exports.displayWelcome = (req, res, next) => {
-  res.render('welcome');
+  res.redirect('/start-trip');
 };
 
 // logging out
 module.exports.logout = (req, res) => {
   req.session.destroy(function (err) {
-    res.redirect('/');
+    res.redirect('/start-trip');
   });
 };
