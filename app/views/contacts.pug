@@ -5,6 +5,7 @@ block content
     each contact in contactArray
       p=contact.name
       p=contact.phone_number
-      button Edit 
-      button Delete
+      a(href=`/contacts/edit/${contact.id}`)
+        button Edit 
+      button(id=contact.id) Delete
 

@@ -1,5 +1,29 @@
 'use strict';
 
+// Called on GET request to register/contacts
+module.exports.displayContactsForm = (req, res, next) => {
+  res.render('emergency-contact-form');
+}
+
+// Called on a POST request to register/ contacts (i.e. when the user clicks 'Add' to add a new emergency contact)
+module.exports.addEmergencyContacts = (req, res, next) => {
+  const { Emergency_Contact } = req.app.get("models");
+
+  const newContact = {
+    name: req.body.name,
+    phone_number: req.body.phone_number,
+    user_id: req.user.id
+  }
+  Emergency_Contact.create(newContact)
+    .then(() => {
+      console.log('CONTACT ADDED!')
+    })
+    .catch(err => {
+      console.log(err);
+    })
+}
+
+// List all of a user's contacts
 module.exports.displayContacts = (req, res, next) => {
   const { Emergency_Contact } = req.app.get("models");
   Emergency_Contact.findAll({
@@ -16,27 +40,21 @@ module.exports.displayContacts = (req, res, next) => {
   })
 }
 
-// Called on GET request to register/contacts
-module.exports.displayContactsForm = (req, res, next) => {
-  res.render('emergency-contact-form');
-}
-
-// Called on a POST request to register/ contacts (i.e. when the user clicks 'Add' to add a new emergency contact)
-module.exports.addEmergencyContacts = (req, res, next) => {
+module.exports.displayEditContactForm = (req, res, next) => {
   const { Emergency_Contact } = req.app.get("models");
-
-  const newContact = {
-    name: req.body.name,
-    phone_number: req.body.phone_number,
-    user_id: req.user.id
-  }
-
-  console.log('new contact in authCtrl', newContact);
-  Emergency_Contact.create(newContact)
-    .then(() => {
-      console.log('CONTACT ADDED!')
-    })
-    .catch(err => {
-      console.log(err);
-    })
+  Emergency_Contact.findById(req.params.id)
+  .then(contact => {
+    res.render('emergency-contact-form', { contact } )
+  })
+  .catch(err => {
+    console.log('err!', err);
+  })
 }
+
+module.exports.editContact = (req, res, next) => {
+}
+
+module.exports.deleteContact = (req, res, next) => {
+
+}
+
