@@ -9,7 +9,7 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 const flash = require('express-flash');
 
-app.set('models', require('./models')); 
+app.set('models', require('./db/models')); 
 
 app.use(express.static(__dirname + '/static')); // maybe can get rid of this!!
 app.set('views', __dirname + '/views');
@@ -23,7 +23,7 @@ app.use(session({
 })); 
 
 //Execute passport strategies file
-require('./models/config/passport-strat.js');
+require('./db/config/passport-strat.js');
 
 // Sets persistent login sessions
 app.use(passport.initialize());

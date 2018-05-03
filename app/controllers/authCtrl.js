@@ -2,7 +2,7 @@
 const passport = require('passport');
 
 // creating new users
-module.exports.displayRegister = (req, res) => {
+module.exports.displayRegister = (req, res, next) => {
   res.render('register');
 };
 
