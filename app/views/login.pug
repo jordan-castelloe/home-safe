@@ -1,0 +1,13 @@
+extends index
+block content 
+
+  if message 
+    h2= message
+    
+  h1 Login
+  form(name="login" method="POST" action="/login")
+    label(for="email") Email Address
+    input.text(name="email" type="email" required)
+    label(for="password") Password
+    input(name="password" type="password" required)
+    input.btn(type="submit" value="Log In")
