@@ -24,7 +24,7 @@ const RegistrationStrategy = new Strategy(
   // arg2 callback, handle storing a user's details.
   (req, email, password, done) => {
     console.log("local strat callback: password", email);
-    User = req.app.get("models").Customer;
+    User = req.app.get("models").User;
 
     // add our hashed password generating function inside the callback function
     const generateHash = password => {
