@@ -9,7 +9,6 @@ module.exports.displayContacts = (req, res, next) => {
     }
   })
   .then(contactArray => {
-    console.log('WHAAAAT are we getting back from contacts?', contactArray);
     res.render('contacts', { contactArray })
   })
   .catch(err => {
