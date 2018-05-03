@@ -1,0 +1,23 @@
+extends index
+block content 
+
+  h1 Add Three Emergency Contacts
+  form(name="emergency-contacts" method="post" action="/register/contacts")
+    h2 Emergency Contact #1 
+    label(for="name") Name
+    input(name="name" type="text" required)
+    label(for="phone") Phone Number
+    input(name="confirm-emergency-code" type="tel" required)
+
+    input.btn(type="submit" value="Add")
+    //- h2 Emergency Contact #2
+    //- label(for="name") Name
+    //- input(name="name" type="text" required)
+    //- label(for="phone") Phone Number
+    //- input(name="confirm-emergency-code" type="tel" required)
+
+    //- h2 Emergency Contact #3
+    //- label(for="name") Name
+    //- input(name="name" type="text" required)
+    //- label(for="phone") Phone Number
+    //- input(name="confirm-emergency-code" type="tel" required)

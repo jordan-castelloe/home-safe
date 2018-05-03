@@ -7,7 +7,7 @@ module.exports.displayRegister = (req, res, next) => {
 };
 
 module.exports.register = (req, res, next) => {
-  if (req.body.password === req.body.confirmation) {
+  if (req.body.password === req.body.confirm_password) {
     // first argument is name of the passport strategy we created in passport-strat.js
     passport.authenticate('local-signup', (err, user, msgObj) => {
 
@@ -21,7 +21,7 @@ module.exports.register = (req, res, next) => {
         // using https://www.npmjs.com/package/express-flash-2 docs, but installed express-flash
         req.flash('registerMsg', `Thanks for signing up, ${user.first_name}!`);
         // Redirect kicks off a new request and makes the route in the URL match the location we have sent the user to. That's why we have to create a flash message so it will persist through the new request of the welcome route
-        res.redirect('/');
+        res.redirect('/register/contacts');
       });
     })(req, res, next);
   } else {
@@ -50,13 +50,29 @@ module.exports.login = (req, res, next) => {
   })(req, res, next);
 };
 
-module.exports.displayWelcome = (req, res, next) => {
-  res.redirect('/trip');
-};
 
 // logging out
-module.exports.logout = (req, res) => {
+module.exports.logout = (req, res, next) => {
   req.session.destroy(function (err) {
-    res.redirect('/trip');
+    res.redirect('/login');
   });
 };
+
+// Called on GET request to register/contacts
+module.exports.displayContactsForm = (req, res, next) => {
+  res.render('emergency-contact-form');
+}
+
+// Called on a POST request to register/ contacts (i.e. when the user clicks 'Add' to add a new emergency contact)
+module.exports.addEmergencyContacts = (req, res, next) => {
+  const { Emergency_Contact } = req.app.get("models");
+  const newContact = req.body;
+  console.log('new contact in authCtrl', newContact);
+  Emergency_Contact.create(newContact)
+  .then(() => {
+    console.log('CONTACT ADDED!')
+  })
+  .catch(err => {
+    console.log(err);
+  })
+}
