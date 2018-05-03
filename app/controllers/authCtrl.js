@@ -50,7 +50,7 @@ module.exports.login = (req, res, next) => {
   })(req, res, next);
 };
 
-module.exports.welcome = (req, res, next) => {
+module.exports.displayWelcome = (req, res, next) => {
   res.render('welcome');
 };
 
