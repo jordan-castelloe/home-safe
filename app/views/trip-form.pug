@@ -2,7 +2,7 @@ extends index
 block content 
     
   h1 Start a New Trip
-  form(name="start-trip" method="post" action="/trip/in-progress")
+  form(name="start-trip" method="post" action="/trip/start")
     label(for="location") Where are you going?
     input.text(id="first_name" name="first_name" type="text" required)
     label(for="activity") What will you be doing?
