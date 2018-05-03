@@ -69,7 +69,8 @@ module.exports.addEmergencyContacts = (req, res, next) => {
 
   const newContact = { 
     name: req.body.name,
-    phone_number: req.body.phone_number
+    phone_number: req.body.phone_number,
+    user_id : req.user.id
   }
   
   console.log('new contact in authCtrl', newContact);
