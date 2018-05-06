@@ -60,7 +60,7 @@ module.exports.editContact = (req, res, next) => {
     phone_number: req.body.phone_number
   }
   Emergency_Contact.update(newData, { where: { id: req.params.id } })
-    .then((newContact) => {
+    .then(newContact => {
       res.redirect('/contacts')
     })
     .catch(err => {
@@ -71,6 +71,11 @@ module.exports.editContact = (req, res, next) => {
 }
 
 module.exports.deleteContact = (req, res, next) => {
-
+  const { Emergency_Contact } = req.app.get('models');
+  Emergency_Contact.destroy({ where: { id: req.params.id } })
+    .then(() => {
+      res.redirect('/contacts');
+    })
+    .catch(err => next(err));
 }
 
