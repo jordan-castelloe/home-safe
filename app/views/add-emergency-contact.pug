@@ -9,10 +9,10 @@ block content
       input(name="name" type="text" value=contact.name required)
       label(for="phone_number") Phone Number
       input(name="phone_number" type="tel" value=contact.phone_number required)
+      input.btn(type="submit" value="Update")
     else
      label(for="name") Name
       input(name="name" type="text" required)
       label(for="phone_number") Phone Number
-      input(name="phone_number" type="tel" required)
-      
-    input.btn(type="submit" value="Add")
+      input(name="phone_number" type="tel" required) 
+      input.btn(type="submit" value="Add")

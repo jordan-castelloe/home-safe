@@ -2,7 +2,7 @@
 
 // Called on GET request to register/contacts
 module.exports.displayContactsForm = (req, res, next) => {
-  res.render('emergency-contact-form');
+  res.render('add-emergency-contact');
 }
 
 // Called on a POST request to register/ contacts (i.e. when the user clicks 'Add' to add a new emergency contact)
@@ -44,7 +44,7 @@ module.exports.displayEditContactForm = (req, res, next) => {
   const { Emergency_Contact } = req.app.get("models");
   Emergency_Contact.findById(req.params.id)
   .then(contact => {
-    res.render('emergency-contact-form', { contact } )
+    res.render('edit-emergency-contact', { contact } )
   })
   .catch(err => {
     console.log('err!', err);
