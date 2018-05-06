@@ -43,6 +43,7 @@ module.exports.displayContacts = (req, res, next) => {
 }
 
 module.exports.displayEditContactForm = (req, res, next) => {
+  console.log('!!!! req params id right when the form is displayed', req.params.id);
   const { Emergency_Contact } = req.app.get("models");
   Emergency_Contact.findById(req.params.id)
   .then(contact => {
@@ -59,8 +60,11 @@ module.exports.editContact = (req, res, next) => {
     name: req.body.name,
     phone_number: req.body.phone_number
   }
+  console.log('!!!!!!!!!!!!!! NEW INFO IN CTRL', newData);
+  console.log('!!!!!!!!!!!!!!!!! req.params.id', req.params.id);
   Emergency_Contact.update(newData, { where: { id: req.params.id } })
-    .then(() => {
+    .then((newContact) => {
+      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! new contact', newContact);
       res.redirect('/contacts')
     })
     .catch(err => {

@@ -2,7 +2,7 @@ extends index
 block content 
 
   h1 Edit #{contact.name}'s Information
-  form(name="emergency-contacts" method="post" action="/contacts/edit")
+  form(name="emergency-contacts" method="post" action=`/contacts/edit/${contact.id}`)
     label(for="name") Name
     input(name="name" type="text" value=contact.name required)
     label(for="phone_number") Phone Number
