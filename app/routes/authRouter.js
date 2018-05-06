@@ -2,8 +2,10 @@
 
 const { Router } = require('express');
 const authRouter = Router();
-const { displayRegister, register, displayContactsForm, addEmergencyContacts, displayLogin, login, displayWelcome, logout} = require('../controllers/authCtrl');
+const { displayRegister, register, displayLogin, login, displayWelcome, logout} = require('../controllers/authCtrl');
+const { displayContactsForm, addEmergencyContacts } = require('../controllers/contactsCtrl');
 const checkAuth = require('./checkAuth');
+
 
 // New users
 authRouter.get('/register', displayRegister);

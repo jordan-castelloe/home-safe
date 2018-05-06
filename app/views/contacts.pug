@@ -1,10 +1,13 @@
 extends index
 block content 
   h1 Emergency Contacts
+  a(href='contacts/new')
+    button.btn.btn-secondary.addContact Add New Contact
   if contactArray
     each contact in contactArray
       p=contact.name
       p=contact.phone_number
-      button Edit 
-      button Delete
+      a(href=`/contacts/edit/${contact.id}`)
+        button Edit 
+      button.deleteContact(id=contact.id) Delete
 

@@ -1,0 +1,10 @@
+extends index
+block content 
+
+  h1 Edit #{contact.name}'s Information
+  form(name="emergency-contacts" method="post" action=`/contacts/edit/${contact.id}`)
+    label(for="name") Name
+    input(name="name" type="text" value=contact.name required)
+    label(for="phone_number") Phone Number
+    input(name="phone_number" type="tel" value=contact.phone_number required)
+    input.btn(type="submit" value="Update")
