@@ -54,6 +54,20 @@ module.exports.displayEditContactForm = (req, res, next) => {
 }
 
 module.exports.editContact = (req, res, next) => {
+  const { Emergency_Contact } = req.app.get('models');
+  const newData = {
+    name: req.body.name,
+    phone_number: req.body.phone_number
+  }
+  Emergency_Contact.update(newData, { where: { id: req.params.id } })
+    .then(() => {
+      res.redirect('/contacts')
+    })
+    .catch(err => {
+      console.log(err);
+      next(err);
+    })
+
 }
 
 module.exports.deleteContact = (req, res, next) => {
