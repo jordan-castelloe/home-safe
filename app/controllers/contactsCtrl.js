@@ -16,10 +16,12 @@ module.exports.addEmergencyContacts = (req, res, next) => {
   }
   Emergency_Contact.create(newContact)
     .then(() => {
-      console.log('CONTACT ADDED!')
+      res.redirect('/trip');
     })
     .catch(err => {
       console.log(err);
+      // TODO: add helpful error message
+      // next(err);
     })
 }
 
