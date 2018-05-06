@@ -10,7 +10,8 @@ $('.deleteContact').on('click', event => {
     url: `/contacts/${contactId}`,
     type: 'DELETE',
     success: result => {
-      $(`#${contactId}`).remove();
+      console.log('event.target', event.target);
+      $(event.target).remove();
     }
   });
 });
