@@ -2,8 +2,7 @@ extends index
 block content 
   h1 Emergency Contacts
   a(href='contacts/new')
-    button.addContact Add New Contact
-  button.btn.btn-primary
+    button.btn.btn-secondary.addContact Add New Contact
   if contactArray
     each contact in contactArray
       p=contact.name
