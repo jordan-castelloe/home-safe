@@ -2,12 +2,18 @@ extends index
 block content 
     
   h1 Start a New Trip
-  div.start-trip
+  .start-trip
     label(for="location") Where are you going?
     input.text(id="location" name="location" type="text" required)
     label(for="activity") What will you be doing?
     input.text(id="activity" name="activity" type="text" required)
     label(for="return-time") What time should you be back?
     input.text(id="return-time" name="return-time" type="time" required)
-    //- a(href="/trip/start")
     button.btn.btn-primary#start-trip Start Trip
+  
+  .trip-in-progress
+    h3.timer
+    label(for="safe-code") When you get back, please enter your safe code.
+    input.text(id="safe-code" name="safe-code" type="text" required)
+    
+
