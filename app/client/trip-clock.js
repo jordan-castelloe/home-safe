@@ -22,8 +22,8 @@ const showTripProgress = () => {
   $('.trip-in-progress').show();
 }
 
-
-// starts the interval
+// starts the timer interval
+// checks if return time == current time in callback function and stops itself
 const startTimer = () => {
   const timer = setInterval(() => {
     // Grab return time values
@@ -31,12 +31,14 @@ const startTimer = () => {
 
     // Grab values for current Time
     const currentHour = parseInt(moment().format('hh'));
-    const currentMinute = parseInt(moment().format('mm'));
+    let currentMinute = parseInt(moment().format('mm'));
+    currentMinute = currentMinute < 10 ? `0${currentMinute}` : currentMinute;
     const currentTimeOfDay = moment().format('A');
 
     console.log('return time: return minute', `${returnHour}:${returnMinute} ${returnTimeOfDay}`);
     console.log('current hour: current minute', `${currentHour}:${currentMinute} ${currentTimeOfDay}`);
 
+    // If the return time matches the current time, stop the timer
     if (returnHour == currentHour && returnMinute == currentMinute && returnTimeOfDay == currentTimeOfDay) {
       clearInterval(timer);
       console.log("Timer done!!");
