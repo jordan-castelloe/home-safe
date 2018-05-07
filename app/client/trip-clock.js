@@ -4,13 +4,16 @@
 $('.trip-in-progress').hide();
 
 // Store trip in local storage
-const storeTrip = () => {
+const getTrip = () => {
   const trip = {
     location: $('#location').val(),
     activity: $('#activity').val(),
-    returnTime: $('#return-time').val()
+    returnHour: $('#hour').val(),
+    returnMinute: $('#minute').val(),
+    returnTimeOfDay: $('#am-pm').val(),
   }
   localStorage.setItem("trip", JSON.stringify(trip));
+  return trip;
 }
 
 // Hide the trip form and show the timer
@@ -20,20 +23,24 @@ const showTripProgress = () => {
 }
 
 // is there any reason to use local storage here??
-const startTimer = () => {
-  const trip = JSON.parse(localStorage.getItem("trip"));
-  const returnTime = moment(trip.returnTime, "hh:mm:ss A")
-  console.log('moment obj', returnTime);
-  const currentHour =  parseInt(moment().format('H'));
+const checkTime = () => {
+  // Grab return time values
+  const { returnHour, returnMinute, returnTimeOfDay } = getTrip();
+  
+  // Grab values for current Time
+  const currentHour =  parseInt(moment().format('hh'));
   const currentMinute = parseInt(moment().format('mm'));
-  console.log('current hour: current minute', `${currentHour}:${currentMinute}`);
+  const currentTimeOfDay = moment().format('A');
+  console.log('return time: return minute', `${returnHour}:${returnMinute} ${returnTimeOfDay}`);
+  console.log('current hour: current minute', `${currentHour}:${currentMinute} ${currentTimeOfDay}`);
+
+
 }
 
 // Parent function that fires all the other functions
 const startTrip = () => {
-  storeTrip();
   showTripProgress();
-  startTimer();
+  setInterval(checkTime, 1000);
 }
 
 $('#start-trip').click(startTrip);
