@@ -2,11 +2,12 @@ extends index
 block content 
     
   h1 Start a New Trip
-  form(name="start-trip" method="post" action="/trip/start")
+  div.start-trip
     label(for="location") Where are you going?
-    input.text(id="first_name" name="first_name" type="text" required)
+    input.text(id="location" name="location" type="text" required)
     label(for="activity") What will you be doing?
-    input.text(name="last_name" type="text" required)
-    label(for="return_time") What time should you be back?
-    input.text(name="email" type="time" required)
-    input.btn(type="submit" value="Start Trip")
+    input.text(id="activity" name="activity" type="text" required)
+    label(for="return-time") What time should you be back?
+    input.text(id="return-time" name="return-time" type="time" required)
+    //- a(href="/trip/start")
+    button.btn.btn-primary#start-trip Start Trip
