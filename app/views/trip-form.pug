@@ -10,11 +10,12 @@ block content
     input.text(id="activity" name="activity" type="text" required)
     
     h3 What time should you be back?
-    input.text(id="hour" name="hour" type="number" required)
-    input.text(id="minute" name="minute" type="number" required)
-    select#am-pm
-      option(value="AM") A.M.
-      option(value="PM") P.M.
+    input(id="return-time" name="return-time" type="time" required)
+    //- input.text(id="hour" name="hour" type="number" required)
+    //- input.text(id="minute" name="minute" type="number" required)
+    //- select#am-pm
+    //-   option(value="AM") A.M.
+    //-   option(value="PM") P.M.
 
     button.btn.btn-primary#start-trip Start Trip
   
