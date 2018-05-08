@@ -38,9 +38,13 @@ const calculateTimeRemaining = (milleseconds) => {
 }
 
 const displayTimer = ({hours, minutes, seconds, milleseconds}) => {
-  console.log('hours left:', hours);
-  console.log('minutes left:', minutes);
-  console.log('seconds left:', seconds);
+
+  // add a 0 in front of number if it's less than 10
+  hours = hours < 10 ? `0${hours}` : hours;
+  minutes = minutes < 10 ? `0${minutes}` : minutes;
+  seconds = seconds < 10 ? `0${seconds}` : seconds;
+
+  $('.timer').text(`Time Remaining: ${hours}:${minutes}:${seconds}`);
 
 }
 
@@ -65,7 +69,7 @@ const startTimer = () => {
 
     if (millesecondsRemaining === 0) {
       clearInterval(timer);
-      console.log("Timer done!!");
+      $('timer').text('You didn\'t make it back in time! We let your friends go.');
     }
   }, 1000);
 }
