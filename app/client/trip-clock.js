@@ -8,9 +8,10 @@ const getTrip = () => {
   const trip = {
     location: $('#location').val(),
     activity: $('#activity').val(),
-    returnHour: $('#hour').val(),
-    returnMinute: $('#minute').val(),
-    returnTimeOfDay: $('#am-pm').val(),
+    // returnHour: $('#hour').val(),
+    // returnMinute: $('#minute').val(),
+    // returnTimeOfDay: $('#am-pm').val(),
+    returnTime: $('#return-time').val()
   }
   localStorage.setItem("trip", JSON.stringify(trip));
   return trip;
@@ -22,28 +23,53 @@ const showTripProgress = () => {
   $('.trip-in-progress').show();
 }
 
+const calculateTimeRemaining = (milleseconds) => {
+  const timer = {};
+
+  timer.hours = Math.floor(milleseconds / 3600000);
+  milleseconds = milleseconds % 3600000;
+
+  timer.minutes = Math.floor(milleseconds / 60000);
+  milleseconds = milleseconds % 60000;
+
+  timer.seconds = Math.floor(milleseconds / 1000);
+  
+  return timer;
+}
+
+const displayTimer = ({hours, minutes, seconds, milleseconds}) => {
+
+  // add a 0 in front of number if it's less than 10
+  hours = hours < 10 ? `0${hours}` : hours;
+  minutes = minutes < 10 ? `0${minutes}` : minutes;
+  seconds = seconds < 10 ? `0${seconds}` : seconds;
+
+  $('.timer').text(`Time Remaining: ${hours}:${minutes}:${seconds}`);
+
+}
+
 // starts the timer interval
-// checks if return time == current time in callback function and stops itself
+// clears interval when timer gets down to 0
 const startTimer = () => {
   const timer = setInterval(() => {
-    // Grab return time values
-    const { returnHour, returnMinute, returnTimeOfDay } = getTrip();
 
-    // Grab values for current Time
-    const currentHour = parseInt(moment().format('hh'));
-    let currentMinute = parseInt(moment().format('mm'));
-    const currentTimeOfDay = moment().format('A');
+    // Grab return time and convert it to something Moment.js can use
+    let { returnTime } = getTrip(); 
+    const todaysDate = moment().format('MM-DD-YYYY'); 
+    returnTime = moment(`${todaysDate} ${returnTime}`);   
+    
+    // Grab the current time
+    const now = moment().format('MM-DD-YYYY hh:mm:ss A');
 
-    // if the current minute is less than 10, stick a zero in front of it
-    currentMinute = currentMinute < 10 ? `0${currentMinute}` : currentMinute;
+    // calculate milleseconds, seconds, minutes, and hours left between current time and scheduled return time
+    const millesecondsRemaining = returnTime.diff(now);
+    const timeRemaining = calculateTimeRemaining(millesecondsRemaining);
 
-    console.log('return time: return minute', `${returnHour}:${returnMinute} ${returnTimeOfDay}`);
-    console.log('current hour: current minute', `${currentHour}:${currentMinute} ${currentTimeOfDay}`);
+    displayTimer(timeRemaining);
 
-    // If the return time matches the current time, stop the timer
-    if (returnHour == currentHour && returnMinute == currentMinute && returnTimeOfDay == currentTimeOfDay) {
+    if (millesecondsRemaining === 0) {
       clearInterval(timer);
-      console.log("Timer done!!");
+      $('timer').text('You didn\'t make it back in time! We let your friends go.');
     }
   }, 1000);
 }
@@ -55,5 +81,6 @@ const startTrip = () => {
 }
 
 $('#start-trip').click(startTrip);
+
 
 
