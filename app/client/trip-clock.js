@@ -2,6 +2,7 @@
 
 // TODO: change to css
 $('.trip-in-progress').hide();
+$('.home-safe').hide();
 
 // Grab and return the trip values, store in local storage
 const getTrip = () => {
@@ -48,19 +49,26 @@ const displayTimer = ({hours, minutes, seconds, milleseconds}) => {
 
 // Called if user enters emergency passcode OR if the timer finishes without a safecode response
 const sendTexts = () => {
-
+  $.ajax({
+    url: `/send-text`,
+    type: 'POST',
+    success: successMsg=> {
+      console.log(successMsg);
+      // TODO: print something to the dom to say the texts were definitely sent?
+    }
+  })
 }
 
 // Called if the user finishes their safe code before the timer ends
 const homeSafe = () => {
-
+  ('.home-safe').show();
 } 
 
 // accepts the setInterval object, the message we want to print to the DOM when the timer is over, and a boolean that tells us whether or not to text emergency contacts
-const stopTimer = (timer, safeCodeObj) => {
+const stopTimer = (timer, { message, sendText }) => {
   clearInterval(timer);
   $('timer').text(message);
-  sendText ? sendText() : homeSafe(); 
+  sendText ? sendTexts() : homeSafe(); 
 }
 
 const getSafeCode = () => {
@@ -84,6 +92,7 @@ const getEmergencyCode = () => {
 }
 
 const checkSafeCode = (code) => {
+
   const safeCode = getSafeCode();
   const emergencyCode = getEmergencyCode();
   let safeCodeStatus = {};
@@ -105,6 +114,8 @@ const checkSafeCode = (code) => {
       sendText: true
     }
   }
+
+  console.log(safeCodeStatus);
   return safeCodeStatus;
 }
 
@@ -134,8 +145,9 @@ const startTimer = () => {
 
     // ENDING A TRIP: either enter a code or let the timer expire all by itself
     $('#safe-code').click(() => {
-      let { message, safeCodeBool } = checkSafeCode($("#safe-code").val());
-      message ? stopTimer(timer, message, boolean) : printError();
+      const safeCodeStatus = checkSafeCode($("#safe-code").val());
+      // if the safecode status obj has a property of otherCode attached, they entered something other than their safe code OR their emergency code and we need to print an error message without stopping the timer
+      safeCodeStatus.otherCode ? printError(safeCodeStatus.message) : stopTimer(timer, safeCodeStatus);
     })
 
     if (millesecondsRemaining === 0) {
