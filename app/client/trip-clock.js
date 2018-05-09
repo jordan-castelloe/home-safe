@@ -4,6 +4,9 @@
 $('.trip-in-progress').hide();
 $('.home-safe').hide();
 
+// Declare an empty variable for the setInterval obj so it can be cleared from anywhere
+let timer;
+
 // Grab and return the trip values, store in local storage
 const getTrip = () => {
   const trip = {
@@ -131,32 +134,33 @@ const printError = (message) => {
   $('#error').text(message);
 }
 
+const getReturnTime  = () => {
+  // Grab return time and convert it to something Moment.js can use
+  let { returnTime } = getTrip();
+  const todaysDate = moment().format('MM-DD-YYYY');
+  returnTime = moment(`${todaysDate} ${returnTime}`); 
+  return returnTime;
+}
+
 // starts the timer interval
 // clears interval when timer gets down to 0
 const startTimer = () => {
-  const timer = setInterval(() => {
+  const returnTime = getReturnTime();
 
-    // Grab return time and convert it to something Moment.js can use
-    let { returnTime } = getTrip(); 
-    const todaysDate = moment().format('MM-DD-YYYY'); 
-    returnTime = moment(`${todaysDate} ${returnTime}`);   
-    
+  timer = setInterval(() => {
     // Grab the current time
     const now = moment().format('MM-DD-YYYY hh:mm:ss A');
 
-    // calculate milleseconds remaining and then pass that into a function that breaks i
+    // calculate milleseconds remaining
     const millesecondsRemaining = returnTime.diff(now);
+
+    // pass milleseconds into the function that breaks it down into minutes, hours, etc
     const timeRemaining = calculateTimeRemaining(millesecondsRemaining);
 
+    // print the time to the dom
     displayTimer(timeRemaining);
 
-    // ENDING A TRIP: either enter a code or let the timer expire all by itself
-    $('#safe-code-btn').click(() => {
-      console.log('you clicked the safe code ok button!');
-      const safeCodeStatus = checkSafeCode(+$("#safe-code").val());
-      // if the safecode status obj has a property of otherCode attached, they entered something other than their safe code OR their emergency code and we need to print an error message without stopping the timer
-      safeCodeStatus.otherCode ? printError(safeCodeStatus.message) : stopTimer(timer, safeCodeStatus);
-    })
+  
 
     if (millesecondsRemaining === 0) {
       let safeCodeStatus = {
@@ -174,7 +178,14 @@ const startTrip = () => {
   startTimer();
 }
 
+const endTrip = () => {
+  console.log('you clicked the safe code ok button!');
+  const safeCodeStatus = checkSafeCode(+$("#safe-code").val());
+  safeCodeStatus.otherCode ? printError(safeCodeStatus.message) : stopTimer(timer, safeCodeStatus);
+}
 
+
+$('#safe-code-btn').click(endTrip);
 $('#start-trip').click(startTrip);
 
 
