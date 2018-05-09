@@ -124,6 +124,7 @@ const checkSafeCode = (code) => {
     }
     return safeCodeStatus;
   })
+  return safeCodeStatus;
 }
 
 // Called if the user enters anything other than their safe code or emergency code
