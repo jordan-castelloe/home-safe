@@ -61,14 +61,18 @@ const sendTexts = () => {
 }
 
 // Called if the user finishes their safe code before the timer ends
+// hides the timer and shows the success screen
 const homeSafe = () => {
-  ('.home-safe').show();
+  $('.home-safe').show();
+  $('.trip-in-progress').hide();
 } 
 
 // accepts the setInterval object, the message we want to print to the DOM when the timer is over, and a boolean that tells us whether or not to text emergency contacts
 const stopTimer = (timer, { message, sendText }) => {
+  console.log('message', message);
+  console.log('sendText', sendText);
   clearInterval(timer);
-  $('timer').text(message);
+  $('.timer').text(message);
   sendText ? sendTexts() : homeSafe(); 
 }
 
@@ -147,15 +151,16 @@ const startTimer = () => {
     displayTimer(timeRemaining);
 
     // ENDING A TRIP: either enter a code or let the timer expire all by itself
-    $('#safe-code').click(() => {
-      const safeCodeStatus = checkSafeCode($("#safe-code").val());
+    $('#safe-code-btn').click(() => {
+      console.log('you clicked the safe code ok button!');
+      const safeCodeStatus = checkSafeCode(+$("#safe-code").val());
       // if the safecode status obj has a property of otherCode attached, they entered something other than their safe code OR their emergency code and we need to print an error message without stopping the timer
       safeCodeStatus.otherCode ? printError(safeCodeStatus.message) : stopTimer(timer, safeCodeStatus);
     })
 
     if (millesecondsRemaining === 0) {
       let safeCodeStatus = {
-        message = 'You didn\'t make it back in time! Hope you\'re okay. We let your friends know for you.',
+        message: 'You didn\'t make it back in time! Hope you\'re okay. We let your friends know for you.',
         sendText: true
       }
       stopTimer(timer, safeCodeStatus);
