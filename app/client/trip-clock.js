@@ -72,8 +72,6 @@ const homeSafe = () => {
 
 // accepts the setInterval object, the message we want to print to the DOM when the timer is over, and a boolean that tells us whether or not to text emergency contacts
 const stopTimer = (timer, { message, sendText }) => {
-  console.log('message', message);
-  console.log('sendText', sendText);
   clearInterval(timer);
   $('.timer').text(message);
   sendText ? sendTexts() : homeSafe(); 
@@ -124,8 +122,6 @@ const checkSafeCode = (code) => {
       sendText: true
     }
   }
-
-  console.log('safe code status', safeCodeStatus);
   return safeCodeStatus;
 }
 
@@ -160,8 +156,7 @@ const startTimer = () => {
     // print the time to the dom
     displayTimer(timeRemaining);
 
-  
-
+    // check if the timer gets down to zero and, if so, clear out the interval
     if (millesecondsRemaining === 0) {
       let safeCodeStatus = {
         message: 'You didn\'t make it back in time! Hope you\'re okay. We let your friends know for you.',
@@ -179,7 +174,6 @@ const startTrip = () => {
 }
 
 const endTrip = () => {
-  console.log('you clicked the safe code ok button!');
   const safeCodeStatus = checkSafeCode(+$("#safe-code").val());
   safeCodeStatus.otherCode ? printError(safeCodeStatus.message) : stopTimer(timer, safeCodeStatus);
 }
