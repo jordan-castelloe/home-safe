@@ -54,7 +54,7 @@ const displayTimer = ({hours, minutes, seconds, milleseconds}) => {
 const sendTexts = () => {
   console.log('send text function called');
   $.ajax({
-    url: `trip/send-texts`,
+    url: `/send-texts`,
     type: 'POST',
   })
   .done(successMsg => {
@@ -83,43 +83,47 @@ const stopTimer = (timer, { message, sendText }) => {
 }
 
 const getUserCodes = () => {
-  $.ajax({
-    url: `trip/user-codes`,
-    type: 'GET',
-  })
-  .done(codeObj => {
-    console.log('codeObj', codeObj);
-    return codeObj
-  })
-  .fail(err => {
-    console.log('Couldn\'t find emergency code', err);
-    return err;
+  return new Promise ((resolve, reject) => {
+    $.ajax({
+      url: `/trip/user-codes`,
+      type: 'GET',
+    })
+    .done(codeObj => {
+      console.log('codeObj', codeObj);
+      resolve(codeObj)
+    })
+    .fail(err => {
+      console.log('Couldn\'t find emergency code', err);
+      reject(err);
+    })
   })
 }
 
 const checkSafeCode = (code) => {
-
-  const { safeCode, emergencyCode } = getUserCodes();
   let safeCodeStatus = {};
-
-  if(code !== safeCode && code !== emergencyCode){
-    safeCodeStatus = {
-      otherCode: true,
-      message: "We don\'t recognize that code. Please try again.",
-      sendText: false
+  getUserCodes()
+  .then(({ safeCode, emergencyCode }) => {
+    console.log('safe code', safeCode);
+    console.log('emergency code', emergencyCode);
+    if(code !== safeCode && code !== emergencyCode){
+      safeCodeStatus = {
+        otherCode: true,
+        message: "We don\'t recognize that code. Please try again.",
+        sendText: false
+      }
+    } else if(code === safeCode) {
+      safeCodeStatus = {
+        message: "Glad you made it home safe!",
+        sendText: false
+      }
+    } else if (code === emergencyCode){
+      safeCodeStatus = {
+        message: "Hang tight, we're notifying your emergency contacts.",
+        sendText: true
+      }
     }
-  } else if(code === safeCode) {
-    safeCodeStatus = {
-      message: "Glad you made it home safe!",
-      sendText: false
-    }
-  } else if (code === emergencyCode){
-    safeCodeStatus = {
-      message: "Hang tight, we're notifying your emergency contacts.",
-      sendText: true
-    }
-  }
-  return safeCodeStatus;
+    return safeCodeStatus;
+  })
 }
 
 // Called if the user enters anything other than their safe code or emergency code
