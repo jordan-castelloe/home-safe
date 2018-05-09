@@ -49,14 +49,15 @@ const displayTimer = ({hours, minutes, seconds, milleseconds}) => {
 
 // Called if user enters emergency passcode OR if the timer finishes without a safecode response
 const sendTexts = () => {
-  $.ajax({
-    url: `/send-text`,
-    type: 'POST',
-    success: successMsg=> {
-      console.log(successMsg);
-      // TODO: print something to the dom to say the texts were definitely sent?
-    }
-  })
+  console.log('texts sent!!');
+  // $.ajax({
+  //   url: `/send-text`,
+  //   type: 'POST',
+  //   success: successMsg=> {
+  //     console.log(successMsg);
+  //     // TODO: print something to the dom to say the texts were definitely sent?
+  //   }
+  // })
 }
 
 // Called if the user finishes their safe code before the timer ends
@@ -72,23 +73,25 @@ const stopTimer = (timer, { message, sendText }) => {
 }
 
 const getSafeCode = () => {
-  $.ajax({
-    url: `/safe-code`,
-    type: 'GET',
-    success: safeCode => {
-      return safeCode;
-    }
-  })
+  // $.ajax({
+  //   url: `/safe-code`,
+  //   type: 'GET',
+  //   success: safeCode => {
+  //     return safeCode;
+  //   }
+  // })
+  return 1234;
 }
 
 const getEmergencyCode = () => {
-  $.ajax({
-    url: `/emergency-code`,
-    type: 'GET',
-    success: eCode => {
-      return eCode;
-    }
-  })
+  // $.ajax({
+  //   url: `/emergency-code`,
+  //   type: 'GET',
+  //   success: eCode => {
+  //     return eCode;
+  //   }
+  // })
+  return 1235;
 }
 
 const checkSafeCode = (code) => {
@@ -115,7 +118,7 @@ const checkSafeCode = (code) => {
     }
   }
 
-  console.log(safeCodeStatus);
+  console.log('safe code status', safeCodeStatus);
   return safeCodeStatus;
 }
 
@@ -151,8 +154,11 @@ const startTimer = () => {
     })
 
     if (millesecondsRemaining === 0) {
-      let message = 'You didn\'t make it back in time! Hope you\'re okay. We let your friends know for you.'
-      stopTimer(timer, message, true);
+      let safeCodeStatus = {
+        message = 'You didn\'t make it back in time! Hope you\'re okay. We let your friends know for you.',
+        sendText: true
+      }
+      stopTimer(timer, safeCodeStatus);
     }
   }, 1000);
 }
