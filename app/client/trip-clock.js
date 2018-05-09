@@ -57,7 +57,7 @@ const homeSafe = () => {
 } 
 
 // accepts the setInterval object, the message we want to print to the DOM when the timer is over, and a boolean that tells us whether or not to text emergency contacts
-const stopTimer = (timer, message, sendText) => {
+const stopTimer = (timer, safeCodeObj) => {
   clearInterval(timer);
   $('timer').text(message);
   sendText ? sendText() : homeSafe(); 
@@ -86,26 +86,31 @@ const getEmergencyCode = () => {
 const checkSafeCode = (code) => {
   const safeCode = getSafeCode();
   const emergencyCode = getEmergencyCode();
-  
-  if(code === safeCode){
-    return {
+  let safeCodeStatus = {};
+
+  if(code !== safeCode && code !== emergencyCode){
+    safeCodeStatus = {
+      otherCode: true,
+      message: "We don\'t recognize that code. Please try again.",
+      sendText: false
+    }
+  } else if(code === safeCode) {
+    safeCodeStatus = {
       message: "Glad you made it home safe!",
-      safeCodeBool: true
+      sendText: false
     }
   } else if (code === emergencyCode){
-    return {
+    safeCodeStatus = {
       message: "Hang tight, we're notifying your emergency contacts.",
-      safeCodeBool: false
+      sendText: true
     }
-  } else {
-    return { safeCodeBool: false }
-
   }
+  return safeCodeStatus;
 }
 
-// Called if the user enters anythign other than their safe code or emergency code
-const printError = () => {
-  $('#error').text('We don\'t recognize that code. Please try again.');
+// Called if the user enters anything other than their safe code or emergency code
+const printError = (message) => {
+  $('#error').text(message);
 }
 
 // starts the timer interval
