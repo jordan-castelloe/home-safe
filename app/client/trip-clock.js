@@ -3,14 +3,11 @@
 // TODO: change to css
 $('.trip-in-progress').hide();
 
-// Store trip in local storage
+// Grab and return the trip values, store in local storage
 const getTrip = () => {
   const trip = {
     location: $('#location').val(),
     activity: $('#activity').val(),
-    // returnHour: $('#hour').val(),
-    // returnMinute: $('#minute').val(),
-    // returnTimeOfDay: $('#am-pm').val(),
     returnTime: $('#return-time').val()
   }
   localStorage.setItem("trip", JSON.stringify(trip));
@@ -23,6 +20,7 @@ const showTripProgress = () => {
   $('.trip-in-progress').show();
 }
 
+// Accepts number of milleseconds remaining, converts to hours, minutes, etc.
 const calculateTimeRemaining = (milleseconds) => {
   const timer = {};
 
@@ -44,7 +42,35 @@ const displayTimer = ({hours, minutes, seconds, milleseconds}) => {
   minutes = minutes < 10 ? `0${minutes}` : minutes;
   seconds = seconds < 10 ? `0${seconds}` : seconds;
 
+  // print the remaining time to the dom
   $('.timer').text(`Time Remaining: ${hours}:${minutes}:${seconds}`);
+}
+
+// Called if user enters emergency passcode OR if the timer finishes without a safecode response
+const sendText = () => {
+
+}
+
+// Called if the user finishes their safe code before the timer ends
+const homeSafe = () => {
+
+} 
+
+// accepts the setInterval object, the message we want to print to the DOM when the timer is over, and a boolean that tells us whether or not to text emergency contacts
+const stopTimer = (timer, message, sendText) => {
+  clearInterval(timer);
+  $('timer').text(message);
+  sendText ? sendText() : homeSafe(); 
+}
+
+const checkSafeCode = (code) => {
+  // get user's safe code
+  // get user's emergency code
+  // compare to entered code
+
+  // if safe code, return 'safe'
+  // if emergency code, return 'emergency'
+  // if other, return 'other'
 
 }
 
@@ -61,15 +87,22 @@ const startTimer = () => {
     // Grab the current time
     const now = moment().format('MM-DD-YYYY hh:mm:ss A');
 
-    // calculate milleseconds, seconds, minutes, and hours left between current time and scheduled return time
+    // calculate milleseconds remaining and then pass that into a function that breaks i
     const millesecondsRemaining = returnTime.diff(now);
     const timeRemaining = calculateTimeRemaining(millesecondsRemaining);
 
     displayTimer(timeRemaining);
 
+
+    // ENDING A TRIP: either enter a code or let the timer expire all by itself
+    $('#safe-code').click(() => {
+      let { message, boolean } = checkSafeCode($("#safe-code").val());
+      stopTimer(timer, message, boolean)
+    })
+
     if (millesecondsRemaining === 0) {
-      clearInterval(timer);
-      $('timer').text('You didn\'t make it back in time! We let your friends go.');
+      let message = 'You didn\'t make it back in time! Hope you\'re okay. We let your friends know for you.'
+      stopTimer(timer, message, true);
     }
   }, 1000);
 }
@@ -79,6 +112,7 @@ const startTrip = () => {
   showTripProgress();
   startTimer();
 }
+
 
 $('#start-trip').click(startTrip);
 
