@@ -10,10 +10,3 @@ module.exports.displayTripForm = (req, res, next) => {
   res.render('trip-form');
 }
 
-// starts timer
-// renders timer
-// renders space for passcode
-module.exports.startTrip = (req, res, next) => {
-  // TODO: start timer
-  res.render('trip-in-progress');
-}

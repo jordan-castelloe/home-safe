@@ -52,15 +52,20 @@ const displayTimer = ({hours, minutes, seconds, milleseconds}) => {
 
 // Called if user enters emergency passcode OR if the timer finishes without a safecode response
 const sendTexts = () => {
-  console.log('texts sent!!');
-  // $.ajax({
-  //   url: `/send-text`,
-  //   type: 'POST',
-  //   success: successMsg=> {
-  //     console.log(successMsg);
-  //     // TODO: print something to the dom to say the texts were definitely sent?
-  //   }
-  // })
+  console.log('send text function called');
+  $.ajax({
+    url: `trip/send-texts`,
+    type: 'POST',
+  })
+  .done(successMsg => {
+    console.log('made it to the .done');
+    console.log('TEXT ACTUALLY GOT SENT', successMsg);
+    return successMsg
+  })
+  .fail(err => {
+    console.log('could not send texts', err);
+    return err;
+  })
 }
 
 // Called if the user finishes their safe code before the timer ends
@@ -77,32 +82,24 @@ const stopTimer = (timer, { message, sendText }) => {
   sendText ? sendTexts() : homeSafe(); 
 }
 
-const getSafeCode = () => {
-  // $.ajax({
-  //   url: `/safe-code`,
-  //   type: 'GET',
-  //   success: safeCode => {
-  //     return safeCode;
-  //   }
-  // })
-  return 1234;
-}
-
-const getEmergencyCode = () => {
-  // $.ajax({
-  //   url: `/emergency-code`,
-  //   type: 'GET',
-  //   success: eCode => {
-  //     return eCode;
-  //   }
-  // })
-  return 1235;
+const getUserCodes = () => {
+  $.ajax({
+    url: `trip/user-codes`,
+    type: 'GET',
+  })
+  .done(codeObj => {
+    console.log('codeObj', codeObj);
+    return codeObj
+  })
+  .fail(err => {
+    console.log('Couldn\'t find emergency code', err);
+    return err;
+  })
 }
 
 const checkSafeCode = (code) => {
 
-  const safeCode = getSafeCode();
-  const emergencyCode = getEmergencyCode();
+  const { safeCode, emergencyCode } = getUserCodes();
   let safeCodeStatus = {};
 
   if(code !== safeCode && code !== emergencyCode){
