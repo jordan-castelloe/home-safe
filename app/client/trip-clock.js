@@ -47,7 +47,7 @@ const displayTimer = ({hours, minutes, seconds, milleseconds}) => {
 }
 
 // Called if user enters emergency passcode OR if the timer finishes without a safecode response
-const sendText = () => {
+const sendTexts = () => {
 
 }
 
@@ -63,15 +63,49 @@ const stopTimer = (timer, message, sendText) => {
   sendText ? sendText() : homeSafe(); 
 }
 
+const getSafeCode = () => {
+  $.ajax({
+    url: `/safe-code`,
+    type: 'GET',
+    success: safeCode => {
+      return safeCode;
+    }
+  })
+}
+
+const getEmergencyCode = () => {
+  $.ajax({
+    url: `/emergency-code`,
+    type: 'GET',
+    success: eCode => {
+      return eCode;
+    }
+  })
+}
+
 const checkSafeCode = (code) => {
-  // get user's safe code
-  // get user's emergency code
-  // compare to entered code
+  const safeCode = getSafeCode();
+  const emergencyCode = getEmergencyCode();
+  
+  if(code === safeCode){
+    return {
+      message: "Glad you made it home safe!",
+      safeCodeBool: true
+    }
+  } else if (code === emergencyCode){
+    return {
+      message: "Hang tight, we're notifying your emergency contacts.",
+      safeCodeBool: false
+    }
+  } else {
+    return { safeCodeBool: false }
 
-  // if safe code, return 'safe'
-  // if emergency code, return 'emergency'
-  // if other, return 'other'
+  }
+}
 
+// Called if the user enters anythign other than their safe code or emergency code
+const printError = () => {
+  $('#error').text('We don\'t recognize that code. Please try again.');
 }
 
 // starts the timer interval
@@ -93,11 +127,10 @@ const startTimer = () => {
 
     displayTimer(timeRemaining);
 
-
     // ENDING A TRIP: either enter a code or let the timer expire all by itself
     $('#safe-code').click(() => {
-      let { message, boolean } = checkSafeCode($("#safe-code").val());
-      stopTimer(timer, message, boolean)
+      let { message, safeCodeBool } = checkSafeCode($("#safe-code").val());
+      message ? stopTimer(timer, message, boolean) : printError();
     })
 
     if (millesecondsRemaining === 0) {
