@@ -21,6 +21,7 @@ module.exports.getUserCodes = (req, res, next) => {
   })
 }
 
+// TODO: Send a different text msg if they used their emergency code
 
 module.exports.sendTexts = (req, res, next) => {
   
@@ -33,25 +34,22 @@ module.exports.sendTexts = (req, res, next) => {
 
   const { activity, lat, long } = req.body;
 
-  console.log('req.body', req.body);
-
   User.findById(req.user.id)
   .then(({ dataValues: { first_name } }) => {
     const userName = first_name;
-    console.log('user name in .then', userName);
-    const message = `Hi there, your friend ${userName} went ${activity} and hasn't made it back in time. Their last known location is ${lat}, ${long}. Would you mind checking in on them?`
-    console.log('!!!!!!!!!!!!!! MESSAGE', message);
-      // client.messages.create({
-  //   body: 'Hi! Your friend Jordan didn\'t make it back from her run in time. Mind checking up on her?',
-  //   to: '+18285059785',  
-  //   from: '+18286685165'
-  // })
-  // .then(message => {
-  //   console.log('text sent!!');
-  //   console.log(message.sid);
-  //   res.status(200).send("Success!!");
-  // })
-  
+    const message = `Hi there, your friend ${userName} went ${activity} and hasn't made it back in time. Their last known location is: ${lat} lat, ${long} long. Would you mind checking in on them?`
+
+    client.messages.create({
+      body: message,
+      to: '+18285059785',  
+      from: '+18286685165'
+    })
+    .then(message => {
+      console.log('text sent!!');
+      console.log(message.sid);
+      res.status(200).send("Success!!");
+    })
+
   })
   .catch(err => {
     console.log(err);
@@ -59,7 +57,3 @@ module.exports.sendTexts = (req, res, next) => {
 
 }
 
-// AFTER LUNCH
-// redo form to be like a fill-in the blank sentence 
-// get geolocation up and running
-// get user emergency contact and send them a text

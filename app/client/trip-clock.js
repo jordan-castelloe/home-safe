@@ -85,17 +85,14 @@ const checkSafeCode = code => {
 
 // Checks and see if geolocation is available -- if so, adds a location object onto the trip. If not, sends back the trip with no location object.
 const getCurrentLocation = () => {
-  console.log('get current location called.')
   return new Promise((resolve, reject) => {
     let trip = JSON.parse(localStorage.getItem("trip"));
     if (!navigator.geolocation) {
       reject(trip);
     } else {
-      console.log('in the else');
       navigator.geolocation.getCurrentPosition(position => {
         trip.lat = position.coords.latitude;
         trip.long = position.coords.longitude;
-        console.log('trip right before resolve', trip);
         resolve(trip);
       })
     }
