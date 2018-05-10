@@ -24,7 +24,7 @@ let timer;
 
 // Grab and return the trip values, store in local storage
 const getTrip = () => {
-  const trip = {
+  let trip = {
     location: $('#location').val(),
     activity: $('#activity').val(),
     returnTime: $('#return-time').val()
@@ -85,18 +85,22 @@ const checkSafeCode = code => {
 
 // Called if user enters emergency passcode OR if the timer finishes without a safecode response
 const sendTexts = () => {
+  let trip = JSON.parse(localStorage.getItem("trip"));
+  console.log('trip should be json in send text front-end function', trip);
   $.ajax({
     url: `/trip/send-texts`,
     type: 'POST',
+    data: trip
   })
-    .done(successMsg => {
-      console.log('Text sent!');
-      return successMsg
-    })
-    .fail(err => {
-      console.log('could not send texts', err);
-      return err;
-    })
+  .done(successMsg => {
+    console.log('Text sent!');
+    console.log('successMsg', successMsg);
+    return successMsg
+  })
+  .fail(err => {
+    console.log('could not send texts', err);
+    return err;
+  })
 }
 
 // Accepts number of milleseconds remaining, converts to hours, minutes, etc.
