@@ -86,7 +86,7 @@ const checkSafeCode = code => {
 // Called if user enters emergency passcode OR if the timer finishes without a safecode response
 const sendTexts = () => {
   $.ajax({
-    url: `/send-texts`,
+    url: `/trip/send-texts`,
     type: 'POST',
   })
     .done(successMsg => {

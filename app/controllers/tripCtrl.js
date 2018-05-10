@@ -22,6 +22,7 @@ module.exports.getUserCodes = (req, res, next) => {
 }
 
 module.exports.sendTexts = (req, res, next) => {
+  console.log('in send texts function')
   const accountSid = 'ACcae2b80fc1398969262d1eb12bd61c29'; 
   const authToken = 'e4c62e21eb842505db451ce827091d7f';   
 
@@ -34,6 +35,7 @@ module.exports.sendTexts = (req, res, next) => {
     from: '+18286685165'
   })
   .then(message => {
+    console.log('text sent!!');
     console.log(message.sid);
     res.status(200).send("Success!!");
   })
