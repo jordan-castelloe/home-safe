@@ -4,6 +4,8 @@
 $('.trip-in-progress').hide();
 $('#start-over').hide();
 
+let trip;
+
 // ------------------- TRIP TIMER LOGIC ------------------- //
 
 // Process to build the timer:
@@ -24,11 +26,13 @@ let timer;
 
 // Grab and return the trip values, store in local storage
 const getTrip = () => {
-  let trip = {
+  trip = {
     activity: $('#activity').val(),
     returnTime: $('#return-time').val()
   }
-  localStorage.setItem("trip", JSON.stringify(trip));
+  localStorage.setItem("trip", 
+  
+  JSON.stringify(trip));
   return trip;
 }
 
@@ -86,7 +90,7 @@ const checkSafeCode = code => {
 // Checks and see if geolocation is available -- if so, adds a location object onto the trip. If not, sends back the trip with no location object.
 const getCurrentLocation = () => {
   return new Promise((resolve, reject) => {
-    let trip = JSON.parse(localStorage.getItem("trip"));
+    trip = JSON.parse(localStorage.getItem("trip"));
     if (!navigator.geolocation) {
       reject(trip);
     } else {
@@ -117,19 +121,25 @@ const sendTexts = (trip) => {
   })
 }
 
-// Called if user enters emergency passcode OR if the timer finishes without a safecode response
-const alertContacts = () => {
-  console.log('alert contacts called.');
-  getCurrentLocation()
-  .then(tripWithLocation => {
-    console.log('trip with location', tripWithLocation)
-    sendTexts(tripWithLocation)
-  })
-  .catch(tripWithoutLocation => {
-    console.log('trip without location', tripWithoutLocation);
-    sendTexts(tripWithoutLocation);
-  })
+const alertContacts = (trip) => {
+  trip = JSON.parse(localStorage.getItem("trip"));
+  console.log('trip', trip);
+  sendTexts(trip)
 }
+
+// Called if user enters emergency passcode OR if the timer finishes without a safecode response
+// const alertContacts = () => {
+//   console.log('alert contacts called.');
+//   getCurrentLocation()
+//   .then(tripWithLocation => {
+//     console.log('trip with location', tripWithLocation)
+//     sendTexts(tripWithLocation)
+//   })
+//   .catch(tripWithoutLocation => {
+//     console.log('trip without location', tripWithoutLocation);
+//     sendTexts(tripWithoutLocation);
+//   })
+// }
 
 // Accepts number of milleseconds remaining, converts to hours, minutes, etc.
 const calculateTimeRemaining = (milleseconds) => {
