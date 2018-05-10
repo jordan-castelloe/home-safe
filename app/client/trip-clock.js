@@ -2,7 +2,7 @@
 
 // TODO: change to css
 $('.trip-in-progress').hide();
-$('.home-safe').hide();
+$('#start-over').hide();
 
 // Declare an empty variable for the setInterval obj so it can be cleared from anywhere
 let timer;
@@ -71,8 +71,8 @@ const sendTexts = () => {
 // Called if the user finishes their safe code before the timer ends
 // hides the timer and shows the success screen
 const homeSafe = () => {
-  $('.home-safe').show();
-  $('.trip-in-progress').hide();
+  console.log('home safe function called');
+  $('#start-over').show();
 } 
 
 // accepts the setInterval object, the message we want to print to the DOM when the timer is over, and a boolean that tells us whether or not to text emergency contacts
@@ -99,32 +99,32 @@ const getUserCodes = () => {
   })
 }
 
-const checkSafeCode = (code) => {
-  let safeCodeStatus = {};
-  getUserCodes()
-  .then(({ safeCode, emergencyCode }) => {
-    console.log('safe code', safeCode);
-    console.log('emergency code', emergencyCode);
-    if(code !== safeCode && code !== emergencyCode){
-      safeCodeStatus = {
-        otherCode: true,
-        message: "We don\'t recognize that code. Please try again.",
-        sendText: false
+const checkSafeCode = code => {
+  return new Promise((resolve, reject) => {
+    getUserCodes()
+    .then(({ safeCode, emergencyCode }) => {
+      let safeCodeStatus = {};
+      if(code !== safeCode && code !== emergencyCode){
+        reject({
+          otherCode: true,
+          message: "We don\'t recognize that code. Please try again.",
+          sendText: false
+        }) 
+      } else if(code === safeCode) {
+        console.log('you entered your safe code!');
+        resolve({
+          message: "Glad you made it home safe!",
+          sendText: false
+        })
+      } else if (code === emergencyCode){
+        console.log('you entered your emergency code!');
+        resolve({
+          message: "Hang tight, we're notifying your emergency contacts.",
+          sendText: true
+        }) 
       }
-    } else if(code === safeCode) {
-      safeCodeStatus = {
-        message: "Glad you made it home safe!",
-        sendText: false
-      }
-    } else if (code === emergencyCode){
-      safeCodeStatus = {
-        message: "Hang tight, we're notifying your emergency contacts.",
-        sendText: true
-      }
-    }
-    return safeCodeStatus;
+    })
   })
-  return safeCodeStatus;
 }
 
 // Called if the user enters anything other than their safe code or emergency code
@@ -176,8 +176,15 @@ const startTrip = () => {
 }
 
 const endTrip = () => {
-  const safeCodeStatus = checkSafeCode(+$("#safe-code").val());
-  safeCodeStatus.otherCode ? printError(safeCodeStatus.message) : stopTimer(timer, safeCodeStatus);
+  checkSafeCode(+$("#safe-code").val())
+  .then(safeCodeStatus => {
+    console.log('safe code status in endTrip function', safeCodeStatus);
+    stopTimer(timer, safeCodeStatus);
+  })
+  .catch(error => {
+    console.log('error', error);
+    printError(error.message);
+  })
 }
 
 
