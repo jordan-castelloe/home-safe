@@ -4,6 +4,9 @@
 $('.trip-in-progress').hide();
 $('#start-over').hide();
 
+
+// ------------------- TRIP TIMER LOGIC ------------------- //
+
 // Declare an empty variable for the setInterval obj so it can be cleared from anywhere
 let timer;
 
@@ -18,11 +21,6 @@ const getTrip = () => {
   return trip;
 }
 
-// Hide the trip form and show the timer
-const showTripProgress = () => {
-  $('.start-trip').hide();
-  $('.trip-in-progress').show();
-}
 
 // Accepts number of milleseconds remaining, converts to hours, minutes, etc.
 const calculateTimeRemaining = (milleseconds) => {
@@ -39,6 +37,7 @@ const calculateTimeRemaining = (milleseconds) => {
   return timer;
 }
 
+// prints timer to DOM (called at one second interval)
 const displayTimer = ({hours, minutes, seconds, milleseconds}) => {
 
   // add a 0 in front of number if it's less than 10
@@ -57,7 +56,7 @@ const sendTexts = () => {
     type: 'POST',
   })
   .done(successMsg => {
-    console.log('Text sent!!');
+    console.log('Text sent!');
     return successMsg
   })
   .fail(err => {
@@ -66,11 +65,7 @@ const sendTexts = () => {
   })
 }
 
-// Called if the user finishes their safe code before the timer ends
-// hides the timer and shows the success screen
-const homeSafe = () => {
-  $('#start-over').show();
-} 
+
 
 // accepts the setInterval object, the message we want to print to the DOM when the timer is over, and a boolean that tells us whether or not to text emergency contacts
 const stopTimer = (timer, { message, sendText }) => {
@@ -79,6 +74,7 @@ const stopTimer = (timer, { message, sendText }) => {
   sendText ? sendTexts() : homeSafe(); 
 }
 
+// Grabs the current user's safe code and emergency code from the database
 const getUserCodes = () => {
   return new Promise ((resolve, reject) => {
     $.ajax({
@@ -94,6 +90,7 @@ const getUserCodes = () => {
   })
 }
 
+// checks whether the user enetered their safe code, emergency code, or other. Resolves or rejcts a safe code status object.
 const checkSafeCode = code => {
   return new Promise((resolve, reject) => {
     getUserCodes()
@@ -101,7 +98,6 @@ const checkSafeCode = code => {
       let safeCodeStatus = {};
       if(code !== safeCode && code !== emergencyCode){
         reject({
-          otherCode: true,
           message: "We don\'t recognize that code. Please try again.",
           sendText: false
         }) 
@@ -120,21 +116,15 @@ const checkSafeCode = code => {
   })
 }
 
-// Called if the user enters anything other than their safe code or emergency code
-const printError = (message) => {
-  $('#error').text(message);
-}
-
+// Grab return time and convert it to something Moment.js can use
 const getReturnTime  = () => {
-  // Grab return time and convert it to something Moment.js can use
   let { returnTime } = getTrip();
   const todaysDate = moment().format('MM-DD-YYYY');
   returnTime = moment(`${todaysDate} ${returnTime}`); 
   return returnTime;
 }
 
-// starts the timer interval
-// clears interval when timer gets down to 0
+// Starts the timer interval and clears it when the time remaining === 0
 const startTimer = () => {
   const returnTime = getReturnTime();
 
@@ -162,7 +152,25 @@ const startTimer = () => {
   }, 1000);
 }
 
-// Parent function that fires all the other functions
+// ------------------- DOM MANIPULTAION ------------------- //
+
+// Called if the user finishes their safe code before the timer ends
+// hides the timer and shows the success screen
+const homeSafe = () => {
+  $('#start-over').show();
+} 
+// Hide the trip form and show the timer
+const showTripProgress = () => {
+  $('.start-trip').hide();
+  $('.trip-in-progress').show();
+}
+
+// Called if the user enters anything other than their safe code or emergency code
+const printError = (message) => {
+  $('#error').text(message);
+}
+
+// ------------------- EVENT LISTENERS ------------------- //
 const startTrip = () => {
   showTripProgress();
   startTimer();
@@ -177,7 +185,6 @@ const endTrip = () => {
     printError(error.message);
   })
 }
-
 
 $('#safe-code-btn').click(endTrip);
 $('#start-trip').click(startTrip);
