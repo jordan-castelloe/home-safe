@@ -5,9 +5,12 @@ $('.deleteContact').on('click', event => {
   $.ajax({
     url: `/contacts/${contactId}`,
     type: 'DELETE',
-    success: result => {
-      console.log('event.target', event.target);
-      $(event.target).remove();
-    }
-  });
+  })
+  .done(result => {
+    console.log('event.target', event.target);
+    $(event.target).remove();
+  })
+  .fail(err => {
+    console.log('Something went wrong!', err);
+  })
 });
