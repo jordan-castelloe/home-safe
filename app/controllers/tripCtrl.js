@@ -22,7 +22,19 @@ module.exports.getUserCodes = (req, res, next) => {
 }
 
 module.exports.sendTexts = (req, res, next) => {
-  console.log('Texts sent!!');
-  res.status(200).send("Success!!");
+  const accountSid = 'ACcae2b80fc1398969262d1eb12bd61c29'; 
+  const authToken = 'e4c62e21eb842505db451ce827091d7f';   
 
+  const twilio = require('twilio');
+  const client = new twilio(accountSid, authToken);
+
+  client.messages.create({
+    body: 'Hi! Your friend Jordan didn\'t make it back from her run in time. Mind checking up on her?',
+    to: '+18285059785',  
+    from: '+18286685165'
+  })
+  .then(message => {
+    console.log(message.sid);
+    res.status(200).send("Success!!");
+  })
 }
