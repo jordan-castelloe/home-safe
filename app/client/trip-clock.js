@@ -4,8 +4,20 @@
 $('.trip-in-progress').hide();
 $('#start-over').hide();
 
-
 // ------------------- TRIP TIMER LOGIC ------------------- //
+
+// Basic process for timer:
+
+// 1. When the user clicks 'Start Trip', we need to grab the return time they entered. We'll convert it to a Moment so we can work with it.
+// 2. Start a setInterval function that runs every second. This function will do a few things:
+//    a. Calculate the time remaining (i.e. the difference between the current time and the return time. This will be in milleseconds by default, so we'll pass it into a function that breaks it down into seconds, minutes, and hours.)
+//    b. Print the time remaining to the DOM. This is our countdown clock, and it'll update once per second.
+//    c. Check and see if the time remaining is zero. If so, clear the interval and call the function to send texts.
+// 3. While the timer is running,users can input their safe code or their emergency code.
+//    a. If they enter their safe code, the timer stops and a 'Start Trip' button appers
+//    b. If they enter their emergency code, the timer stops and the function to send texts is called
+//    c. If they enter anything other than their safe code or emergency code, the timer keeps going and they get an error message 
+
 
 // Declare an empty variable for the setInterval obj so it can be cleared from anywhere
 let timer;
@@ -21,6 +33,71 @@ const getTrip = () => {
   return trip;
 }
 
+// Grab return time and convert it to something Moment.js can use
+const getReturnTime = () => {
+  let { returnTime } = getTrip();
+  const todaysDate = moment().format('MM-DD-YYYY');
+  returnTime = moment(`${todaysDate} ${returnTime}`);
+  return returnTime;
+}
+
+// Grabs the current user's safe code and emergency code from the database
+const getUserCodes = () => {
+  return new Promise((resolve, reject) => {
+    $.ajax({
+      url: `/trip/user-codes`,
+      type: 'GET',
+    })
+      .done(codeObj => {
+        resolve(codeObj)
+      })
+      .fail(err => {
+        reject(err);
+      })
+  })
+}
+
+// checks whether the user enetered their safe code, emergency code, or other. Resolves or rejcts a safe code status object.
+const checkSafeCode = code => {
+  return new Promise((resolve, reject) => {
+    getUserCodes()
+      .then(({ safeCode, emergencyCode }) => {
+        let safeCodeStatus = {};
+        if (code !== safeCode && code !== emergencyCode) {
+          reject({
+            message: "We don\'t recognize that code. Please try again.",
+            sendText: false
+          })
+        } else if (code === safeCode) {
+          resolve({
+            message: "Glad you made it home safe!",
+            sendText: false
+          })
+        } else if (code === emergencyCode) {
+          resolve({
+            message: "Hang tight, we're notifying your emergency contacts.",
+            sendText: true
+          })
+        }
+      })
+  })
+}
+
+// Called if user enters emergency passcode OR if the timer finishes without a safecode response
+const sendTexts = () => {
+  $.ajax({
+    url: `/send-texts`,
+    type: 'POST',
+  })
+    .done(successMsg => {
+      console.log('Text sent!');
+      return successMsg
+    })
+    .fail(err => {
+      console.log('could not send texts', err);
+      return err;
+    })
+}
 
 // Accepts number of milleseconds remaining, converts to hours, minutes, etc.
 const calculateTimeRemaining = (milleseconds) => {
@@ -49,23 +126,6 @@ const displayTimer = ({hours, minutes, seconds, milleseconds}) => {
   $('.timer').text(`Time Remaining: ${hours}:${minutes}:${seconds}`);
 }
 
-// Called if user enters emergency passcode OR if the timer finishes without a safecode response
-const sendTexts = () => {
-  $.ajax({
-    url: `/send-texts`,
-    type: 'POST',
-  })
-  .done(successMsg => {
-    console.log('Text sent!');
-    return successMsg
-  })
-  .fail(err => {
-    console.log('could not send texts', err);
-    return err;
-  })
-}
-
-
 
 // accepts the setInterval object, the message we want to print to the DOM when the timer is over, and a boolean that tells us whether or not to text emergency contacts
 const stopTimer = (timer, { message, sendText }) => {
@@ -74,55 +134,7 @@ const stopTimer = (timer, { message, sendText }) => {
   sendText ? sendTexts() : homeSafe(); 
 }
 
-// Grabs the current user's safe code and emergency code from the database
-const getUserCodes = () => {
-  return new Promise ((resolve, reject) => {
-    $.ajax({
-      url: `/trip/user-codes`,
-      type: 'GET',
-    })
-    .done(codeObj => {
-      resolve(codeObj)
-    })
-    .fail(err => {
-      reject(err);
-    })
-  })
-}
 
-// checks whether the user enetered their safe code, emergency code, or other. Resolves or rejcts a safe code status object.
-const checkSafeCode = code => {
-  return new Promise((resolve, reject) => {
-    getUserCodes()
-    .then(({ safeCode, emergencyCode }) => {
-      let safeCodeStatus = {};
-      if(code !== safeCode && code !== emergencyCode){
-        reject({
-          message: "We don\'t recognize that code. Please try again.",
-          sendText: false
-        }) 
-      } else if(code === safeCode) {
-        resolve({
-          message: "Glad you made it home safe!",
-          sendText: false
-        })
-      } else if (code === emergencyCode){
-        resolve({
-          message: "Hang tight, we're notifying your emergency contacts.",
-          sendText: true
-        }) 
-      }
-    })
-  })
-}
-
-// Grab return time and convert it to something Moment.js can use
-const getReturnTime  = () => {
-  let { returnTime } = getTrip();
-  const todaysDate = moment().format('MM-DD-YYYY');
-  returnTime = moment(`${todaysDate} ${returnTime}`); 
-  return returnTime;
-}
 
 // Starts the timer interval and clears it when the time remaining === 0
 const startTimer = () => {
@@ -188,6 +200,3 @@ const endTrip = () => {
 
 $('#safe-code-btn').click(endTrip);
 $('#start-trip').click(startTrip);
-
-
-
