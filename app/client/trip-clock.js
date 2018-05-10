@@ -52,14 +52,12 @@ const displayTimer = ({hours, minutes, seconds, milleseconds}) => {
 
 // Called if user enters emergency passcode OR if the timer finishes without a safecode response
 const sendTexts = () => {
-  console.log('send text function called');
   $.ajax({
     url: `/send-texts`,
     type: 'POST',
   })
   .done(successMsg => {
-    console.log('made it to the .done');
-    console.log('TEXT ACTUALLY GOT SENT', successMsg);
+    console.log('Text sent!!');
     return successMsg
   })
   .fail(err => {
@@ -71,7 +69,6 @@ const sendTexts = () => {
 // Called if the user finishes their safe code before the timer ends
 // hides the timer and shows the success screen
 const homeSafe = () => {
-  console.log('home safe function called');
   $('#start-over').show();
 } 
 
@@ -89,11 +86,9 @@ const getUserCodes = () => {
       type: 'GET',
     })
     .done(codeObj => {
-      console.log('codeObj', codeObj);
       resolve(codeObj)
     })
     .fail(err => {
-      console.log('Couldn\'t find emergency code', err);
       reject(err);
     })
   })
@@ -111,13 +106,11 @@ const checkSafeCode = code => {
           sendText: false
         }) 
       } else if(code === safeCode) {
-        console.log('you entered your safe code!');
         resolve({
           message: "Glad you made it home safe!",
           sendText: false
         })
       } else if (code === emergencyCode){
-        console.log('you entered your emergency code!');
         resolve({
           message: "Hang tight, we're notifying your emergency contacts.",
           sendText: true
@@ -178,11 +171,9 @@ const startTrip = () => {
 const endTrip = () => {
   checkSafeCode(+$("#safe-code").val())
   .then(safeCodeStatus => {
-    console.log('safe code status in endTrip function', safeCodeStatus);
     stopTimer(timer, safeCodeStatus);
   })
   .catch(error => {
-    console.log('error', error);
     printError(error.message);
   })
 }
