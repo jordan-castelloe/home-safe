@@ -2,15 +2,10 @@ extends index
 block content 
     
   h1 Start a New Trip
-  .start-trip
-    label(for="location") Where are you going?
-    input.text(id="location" name="location" type="text" required)
-    
-    label(for="activity") What will you be doing?
-    input.text(id="activity" name="activity" type="text" required)
-    
-    h3 What time should you be back?
-    input(id="return-time" name="return-time" type="time" required)
+  p.start-trip I'm going 
+    input.text(id="activity" name="activity" type="text" default="on a run at the Volunteer Trail" required)
+    and   and I should be back by 
+    input(id="return-time" name="return-time" type="time" required).
 
     button.btn.btn-primary#start-trip Start Trip
   

@@ -25,7 +25,6 @@ let timer;
 // Grab and return the trip values, store in local storage
 const getTrip = () => {
   let trip = {
-    location: $('#location').val(),
     activity: $('#activity').val(),
     returnTime: $('#return-time').val()
   }
@@ -83,10 +82,27 @@ const checkSafeCode = code => {
   })
 }
 
-// Called if user enters emergency passcode OR if the timer finishes without a safecode response
-const sendTexts = () => {
-  let trip = JSON.parse(localStorage.getItem("trip"));
-  console.log('trip should be json in send text front-end function', trip);
+
+// Checks and see if geolocation is available -- if so, adds a location object onto the trip. If not, sends back the trip with no location object.
+const getCurrentLocation = () => {
+  return new Promise((resolve, reject) => {
+    let trip = JSON.parse(localStorage.getItem("trip"));
+    if (!navigator.geolocation) {
+      reject(trip);
+    } else {
+      navigator.geolocation.getCurrentPosition(position => {
+        trip.location = {
+          lat: position.coords.latitude,
+          long: position.coords.longitude
+        }
+        console.log('trip right before resolve', trip);
+        resolve(trip);
+      })
+    }
+  })
+}
+
+const sendTexts = (trip) => {
   $.ajax({
     url: `/trip/send-texts`,
     type: 'POST',
@@ -100,6 +116,17 @@ const sendTexts = () => {
   .fail(err => {
     console.log('could not send texts', err);
     return err;
+  })
+}
+
+// Called if user enters emergency passcode OR if the timer finishes without a safecode response
+const alertContacts = () => {
+  getCurrentLocation()
+  .then(tripWithLocation => {
+    sendTexts(tripWithLocation)
+  })
+  .catch(tripWithoutLocation => {
+    sendTexts(tripWithoutLocation);
   })
 }
 
@@ -135,7 +162,7 @@ const displayTimer = ({hours, minutes, seconds, milleseconds}) => {
 const stopTimer = (timer, { message, sendText }) => {
   clearInterval(timer);
   $('.timer').text(message);
-  sendText ? sendTexts() : homeSafe(); 
+  sendText ? alertContacts() : homeSafe(); 
 }
 
 
