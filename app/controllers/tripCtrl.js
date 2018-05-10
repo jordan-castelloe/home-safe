@@ -21,31 +21,25 @@ module.exports.getUserCodes = (req, res, next) => {
   })
 }
 
-const getUserName = () => {
-  const { User } = req.app.get("models");
-  User.findById(req.user.id)
-    .then(({ dataValues: { first_name } }) => {
-      return first_name;
-    })
-    .catch(err => {
-      console.log(err);
-    })
-}
 
 module.exports.sendTexts = (req, res, next) => {
   
-  const accountSid = 'ACcae2b80fc1398969262d1eb12bd61c29'; 
-  const authToken = 'e4c62e21eb842505db451ce827091d7f';   
+  const { User } = req.app.get("models");
+  const accountSid = 'ACcae2b80fc1398969262d1eb12bd61c29';
+  const authToken = 'e4c62e21eb842505db451ce827091d7f';
 
   const twilio = require('twilio');
   const client = new twilio(accountSid, authToken);
 
-  const {location, activity} = req.body
-  const userName = getUserName();
-  
-  const message = `Hi there, your friend ${userName} went ${activity} at ${location} and hasn't made it back in time. Would you mind checking in on them?`
-  console.log('!!!!!!!!!!!!!! MESSAGE', message);
-  // client.messages.create({
+  const { location, activity } = req.body
+
+  User.findById(req.user.id)
+  .then(({ dataValues: { first_name } }) => {
+    const userName = first_name;
+    console.log('user name in .then', userName);
+    const message = `Hi there, your friend ${userName} went ${activity} at ${location} and hasn't made it back in time. Would you mind checking in on them?`
+    console.log('!!!!!!!!!!!!!! MESSAGE', message);
+      // client.messages.create({
   //   body: 'Hi! Your friend Jordan didn\'t make it back from her run in time. Mind checking up on her?',
   //   to: '+18285059785',  
   //   from: '+18286685165'
@@ -55,4 +49,14 @@ module.exports.sendTexts = (req, res, next) => {
   //   console.log(message.sid);
   //   res.status(200).send("Success!!");
   // })
+  
+  })
+  .catch(err => {
+    console.log(err);
+  })
+
+  
+
+  
+
 }
