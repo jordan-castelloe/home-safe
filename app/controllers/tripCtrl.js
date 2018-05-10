@@ -31,13 +31,15 @@ module.exports.sendTexts = (req, res, next) => {
   const twilio = require('twilio');
   const client = new twilio(accountSid, authToken);
 
-  const { activity, location } = req.body
+  const { activity, lat, long } = req.body;
+
+  console.log('req.body', req.body);
 
   User.findById(req.user.id)
   .then(({ dataValues: { first_name } }) => {
     const userName = first_name;
     console.log('user name in .then', userName);
-    const message = `Hi there, your friend ${userName} went ${activity} and hasn't made it back in time. Their last known location is ${location.lat}, ${location.long} Would you mind checking in on them?`
+    const message = `Hi there, your friend ${userName} went ${activity} and hasn't made it back in time. Their last known location is ${lat}, ${long}. Would you mind checking in on them?`
     console.log('!!!!!!!!!!!!!! MESSAGE', message);
       // client.messages.create({
   //   body: 'Hi! Your friend Jordan didn\'t make it back from her run in time. Mind checking up on her?',
