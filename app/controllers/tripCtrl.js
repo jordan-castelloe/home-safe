@@ -11,9 +11,14 @@ module.exports.displayTripForm = (req, res, next) => {
 }
 
 module.exports.getUserCodes = (req, res, next) => {
-  console.log('Get user codes function called');
-  const userCodeObj = {safeCode: 1234, emergencyCode: 1235}
-  res.status(200).send(userCodeObj);
+  const { User } = req.app.get("models");
+  User.findById(req.user.id)
+  .then(({ dataValues: { safe_code, emergency_code } }) => {
+    res.status(200).send({ safe_code, emergency_code });
+  })
+  .catch(err => {
+    console.log('Err', err);
+  })
 }
 
 module.exports.sendTexts = (req, res, next) => {

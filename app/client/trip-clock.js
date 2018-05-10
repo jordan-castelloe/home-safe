@@ -6,9 +6,9 @@ $('#start-over').hide();
 
 // ------------------- TRIP TIMER LOGIC ------------------- //
 
-// Basic process for timer:
+// Process to build the timer:
 
-// 1. When the user clicks 'Start Trip', we need to grab the return time they entered. We'll convert it to a Moment so we can work with it.
+// 1. When the user clicks 'Start Trip', grab the return time they entered and convert it to a Moment.js format so we can work with it.
 // 2. Start a setInterval function that runs every second. This function will do a few things:
 //    a. Calculate the time remaining (i.e. the difference between the current time and the return time. This will be in milleseconds by default, so we'll pass it into a function that breaks it down into seconds, minutes, and hours.)
 //    b. Print the time remaining to the DOM. This is our countdown clock, and it'll update once per second.
@@ -61,19 +61,19 @@ const getUserCodes = () => {
 const checkSafeCode = code => {
   return new Promise((resolve, reject) => {
     getUserCodes()
-      .then(({ safeCode, emergencyCode }) => {
+      .then(({ safe_code, emergency_code }) => {
         let safeCodeStatus = {};
-        if (code !== safeCode && code !== emergencyCode) {
+        if (code !== safe_code && code !== emergency_code) {
           reject({
             message: "We don\'t recognize that code. Please try again.",
             sendText: false
           })
-        } else if (code === safeCode) {
+        } else if (code === safe_code) {
           resolve({
             message: "Glad you made it home safe!",
             sendText: false
           })
-        } else if (code === emergencyCode) {
+        } else if (code === emergency_code) {
           resolve({
             message: "Hang tight, we're notifying your emergency contacts.",
             sendText: true
