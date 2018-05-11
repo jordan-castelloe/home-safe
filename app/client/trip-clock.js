@@ -4,7 +4,7 @@
 $('.trip-in-progress').hide();
 $('#start-over').hide();
 
-let trip;
+
 
 // ------------------- TRIP TIMER LOGIC ------------------- //
 
@@ -23,6 +23,7 @@ let trip;
 
 // Declare an empty variable for the setInterval obj so it can be cleared from anywhere
 let timer;
+let trip;
 
 // Grab and return the trip values, store in local storage
 const getTrip = () => {
@@ -30,9 +31,7 @@ const getTrip = () => {
     activity: $('#activity').val(),
     returnTime: $('#return-time').val()
   }
-  localStorage.setItem("trip", 
-  
-  JSON.stringify(trip));
+  localStorage.setItem("trip", JSON.stringify(trip));
   return trip;
 }
 
@@ -172,6 +171,7 @@ const displayTimer = ({hours, minutes, seconds, milleseconds}) => {
 // accepts the setInterval object, the message we want to print to the DOM when the timer is over, and a boolean that tells us whether or not to text emergency contacts
 const stopTimer = (timer, { message, sendText }) => {
   clearInterval(timer);
+  console.log('should be the timer obj to be cleared', timer);
   $('.timer').text(message);
   sendText ? alertContacts() : homeSafe(); 
 }
