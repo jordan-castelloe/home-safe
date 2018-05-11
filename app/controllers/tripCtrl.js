@@ -87,7 +87,8 @@ module.exports.sendTexts= (req, res, next) => {
   })
   .then(msg => {
     console.log('msg', msg);
-    console.log('Success!');
+    const successMsg = 'We texted your emergency contacts.';
+    res.status(200).send(successMsg);
   })
   .catch(err => {
     console.log(err);
