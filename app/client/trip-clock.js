@@ -89,9 +89,8 @@ const checkSafeCode = code => {
 // Checks and see if geolocation is available -- if so, adds a location object onto the trip. If not, sends back the trip with no location object.
 const getCurrentLocation = () => {
   return new Promise((resolve, reject) => {
-    trip = JSON.parse(localStorage.getItem("trip"));
     if (!navigator.geolocation) {
-      reject(trip);
+      resolve(trip);
     } else {
       navigator.geolocation.getCurrentPosition(position => {
         trip.lat = position.coords.latitude;
@@ -120,25 +119,23 @@ const sendTexts = (trip) => {
   })
 }
 
-const alertContacts = (trip) => {
-  trip = JSON.parse(localStorage.getItem("trip"));
-  console.log('trip', trip);
-  sendTexts(trip)
-}
-
-// Called if user enters emergency passcode OR if the timer finishes without a safecode response
-// const alertContacts = () => {
-//   console.log('alert contacts called.');
-//   getCurrentLocation()
-//   .then(tripWithLocation => {
-//     console.log('trip with location', tripWithLocation)
-//     sendTexts(tripWithLocation)
-//   })
-//   .catch(tripWithoutLocation => {
-//     console.log('trip without location', tripWithoutLocation);
-//     sendTexts(tripWithoutLocation);
-//   })
+// const alertContacts = (trip) => {
+//   trip = JSON.parse(localStorage.getItem("trip"));
+//   console.log('trip', trip);
+//   sendTexts(trip)
 // }
+
+//Called if user enters emergency passcode OR if the timer finishes without a safecode response
+const alertContacts = () => {
+  trip = JSON.parse(localStorage.getItem("trip"));
+  getCurrentLocation()
+  .then(trip=> {
+    sendTexts(trip)
+  })
+  .catch(err => {
+    console.log(err);
+  })
+}
 
 // Accepts number of milleseconds remaining, converts to hours, minutes, etc.
 const calculateTimeRemaining = (milleseconds) => {
@@ -171,7 +168,6 @@ const displayTimer = ({hours, minutes, seconds, milleseconds}) => {
 // accepts the setInterval object, the message we want to print to the DOM when the timer is over, and a boolean that tells us whether or not to text emergency contacts
 const stopTimer = (timer, { message, sendText }) => {
   clearInterval(timer);
-  console.log('should be the timer obj to be cleared', timer);
   $('.timer').text(message);
   sendText ? alertContacts() : homeSafe(); 
 }
