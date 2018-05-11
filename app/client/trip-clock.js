@@ -4,6 +4,8 @@
 $('.trip-in-progress').hide();
 $('#start-over').hide();
 
+
+
 // ------------------- TRIP TIMER LOGIC ------------------- //
 
 // Process to build the timer:
@@ -21,11 +23,11 @@ $('#start-over').hide();
 
 // Declare an empty variable for the setInterval obj so it can be cleared from anywhere
 let timer;
+let trip;
 
 // Grab and return the trip values, store in local storage
 const getTrip = () => {
-  const trip = {
-    location: $('#location').val(),
+  trip = {
     activity: $('#activity').val(),
     returnTime: $('#return-time').val()
   }
@@ -83,21 +85,56 @@ const checkSafeCode = code => {
   })
 }
 
-// Called if user enters emergency passcode OR if the timer finishes without a safecode response
-const sendTexts = () => {
-  $.ajax({
-    url: `/send-texts`,
-    type: 'POST',
+
+// Checks and see if geolocation is available -- if so, adds a location object onto the trip. If not, sends back the trip with no location object.
+const getCurrentLocation = () => {
+  return new Promise((resolve, reject) => {
+    if (!navigator.geolocation) {
+      resolve(trip);
+    } else {
+      navigator.geolocation.getCurrentPosition(position => {
+        trip.lat = position.coords.latitude;
+        trip.long = position.coords.longitude;
+        resolve(trip);
+      })
+    }
   })
-    .done(successMsg => {
-      console.log('Text sent!');
-      return successMsg
-    })
-    .fail(err => {
-      console.log('could not send texts', err);
-      return err;
-    })
 }
+
+const sendTexts = (trip) => {
+  $.ajax({
+    url: `/trip/send-texts`,
+    type: 'POST',
+    data: trip
+  })
+  .done(successMsg => {
+    $('.timer').text(successMsg);
+    return successMsg
+  })
+  .fail(err => {
+    console.log('could not send texts', err);
+    
+    return err;
+  })
+}
+
+const alertContacts = (trip) => {
+  trip = JSON.parse(localStorage.getItem("trip"));
+  console.log('trip', trip);
+  sendTexts(trip)
+}
+
+//Called if user enters emergency passcode OR if the timer finishes without a safecode response
+// const alertContacts = () => {
+//   trip = JSON.parse(localStorage.getItem("trip"));
+//   getCurrentLocation()
+//   .then(trip=> {
+//     sendTexts(trip)
+//   })
+//   .catch(err => {
+//     console.log(err);
+//   })
+// }
 
 // Accepts number of milleseconds remaining, converts to hours, minutes, etc.
 const calculateTimeRemaining = (milleseconds) => {
@@ -131,7 +168,7 @@ const displayTimer = ({hours, minutes, seconds, milleseconds}) => {
 const stopTimer = (timer, { message, sendText }) => {
   clearInterval(timer);
   $('.timer').text(message);
-  sendText ? sendTexts() : homeSafe(); 
+  sendText ? alertContacts() : homeSafe(); 
 }
 
 
