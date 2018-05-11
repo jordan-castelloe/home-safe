@@ -102,19 +102,18 @@ const getCurrentLocation = () => {
 }
 
 const sendTexts = (trip) => {
-  console.log('trip in send texts', trip);
   $.ajax({
     url: `/trip/send-texts`,
     type: 'POST',
     data: trip
   })
   .done(successMsg => {
-    console.log('Text sent!');
-    console.log('successMsg', successMsg);
+    $('.timer').text(successMsg);
     return successMsg
   })
   .fail(err => {
     console.log('could not send texts', err);
+    
     return err;
   })
 }

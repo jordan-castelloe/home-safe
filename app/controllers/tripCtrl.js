@@ -58,11 +58,9 @@ const sendToTwilio = (contactArray, req) => {
   const twilio = require('twilio');
   const client = new twilio(accountSid, authToken);
   const { activity, lat, long } = req;
-  console.log('CONTACT ARRAY', contactArray);
   return Promise.all(
     contactArray.map(contact => {
       let message = `Hi ${contact.name}, your friend ${contact.first_name} went ${activity} and hasn't made it back in time. Their last known location is: ${lat} lat, ${long} long. Would you mind checking in on them?`
-      console.log('message', message);
       return client.messages.create({
         body: message,
         to: contact.phone_number,
@@ -86,8 +84,7 @@ module.exports.sendTexts= (req, res, next) => {
     return sendToTwilio(contactArray, req.body)
   })
   .then(msg => {
-    console.log('msg', msg);
-    const successMsg = 'We texted your emergency contacts.';
+    const successMsg = 'Success! We texted your emergency contacts.';
     res.status(200).send(successMsg);
   })
   .catch(err => {
