@@ -8,6 +8,8 @@ const passport = require('passport')
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const flash = require('express-flash');
+require('dotenv').config()
+
 
 app.set('models', require('./db/models')); 
 

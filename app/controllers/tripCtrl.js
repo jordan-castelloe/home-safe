@@ -21,42 +21,12 @@ module.exports.getUserCodes = (req, res, next) => {
   })
 }
 
-// const getEmergencyContacts = (Emergency_Contact, userId) => {
-//   return new Promise((resolve, reject) => {
-//     Emergency_Contact.findAll({
-//       raw: true,
-//       where: {
-//         user_id: userId
-//       }
-//     })
-//     .then(contactArray => {
-//       resolve(contactArray);
-//     })
-//     .catch(err => {
-//       reject(err);
-//     })
-//   })
-// }
-
-// const getUserName = (UserModel, userId) => {
-//   return new Promise((resolve, reject) => {
-//     UserModel.findById(userId)
-//     .then(({ dataValues: { first_name } }) => {
-//       resolve(first_name)
-//     })
-//     .catch(err => {
-//       reject(err);
-//     })
-//   })
-// }
-
 // TODO: Send a different text msg if they used their emergency code
 
 const sendToTwilio = (contactArray, req) => {
-  const accountSid = 'ACcae2b80fc1398969262d1eb12bd61c29';
-  const authToken = 'e4c62e21eb842505db451ce827091d7f';
   const twilio = require('twilio');
-  const client = new twilio(accountSid, authToken);
+  const client = new twilio(process.env.TWILIO_ACCOUNT_SID,
+    process.env.TWILIO_AUTH_TOKEN);
   const { activity, lat, long } = req;
   return Promise.all(
     contactArray.map(contact => {
@@ -64,7 +34,7 @@ const sendToTwilio = (contactArray, req) => {
       return client.messages.create({
         body: message,
         to: contact.phone_number,
-        from: 'MG0de678f876d64b10597c626e97691a8d'
+        from: process.env.TWILIO_NUMBER
       })
     })
   )
