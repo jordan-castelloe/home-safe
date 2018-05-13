@@ -2,10 +2,10 @@ extends index
 block content 
 
   h3 Enter your first emergency contact.
+  p You'll have a chance to add up to two more emergency contacts once you register.
   form(name="emergency-contacts" method="post" action="/register/contacts")
-    h5 You'll have a chance to add up to two more emergency contacts once you register.
-     label(for="name") Name
-      input(name="name" type="text" required)
-      label(for="phone_number") Phone Number
-      input(name="phone_number" type="tel" required) 
-      input.btn(type="submit" value="Add")
+    label(for="name") Name
+    input(name="name" type="text" required)
+    label(for="phone_number") Phone Number
+    input(name="phone_number" type="tel" required) 
+    input.btn(type="submit" value="Add")
