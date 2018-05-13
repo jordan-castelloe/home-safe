@@ -14,3 +14,4 @@ $('.deleteContact').on('click', event => {
     console.log('Something went wrong!', err);
   })
 });
+
