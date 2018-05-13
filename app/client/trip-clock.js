@@ -155,7 +155,7 @@ const displayTimer = ({hours, minutes, seconds, milleseconds}) => {
   seconds = seconds < 10 ? `0${seconds}` : seconds;
 
   // print the remaining time to the dom
-  $('.timer').text(`Time Remaining: ${hours}:${minutes}:${seconds}`);
+  $('.timer').text(`We'll text your emergency contacts in ${hours}:${minutes}:${seconds}`);
 }
 
 
