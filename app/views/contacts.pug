@@ -2,12 +2,12 @@ extends index
 block content 
   h1 Emergency Contacts
   a(href='contacts/new')
-    button.btn Add New Contact
+    button.btn.deep-purple.darken-2 Add New Contact
   if contactArray
     each contact in contactArray
       p=contact.name
       p=contact.phone_number
       a(href=`/contacts/edit/${contact.id}`)
-        button.btn Edit 
-      button.btn.deleteContact(id=contact.id) Delete
+        button.btn.deep-purple.darken-2 Edit 
+      button.btn.deleteContact.red.darken-2(id=contact.id) Delete
 
