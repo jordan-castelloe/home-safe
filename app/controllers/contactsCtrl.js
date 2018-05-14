@@ -35,7 +35,6 @@ module.exports.displayContacts = (req, res, next) => {
     }
   })
   .then(contactArray => {
-    console.log('!!!!!!!!!! CONTACT ARRAY', contactArray);
     res.render('contacts', { contactArray })
   })
   .catch(err => {
