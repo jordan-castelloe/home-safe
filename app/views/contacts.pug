@@ -14,7 +14,8 @@ block content
                 i.material-icons edit
             button(id=contact.id).deleteContact.btn-floating.waves-effect.waves-light.deep-orange.lighten-2
               i.material-icons(id=contact.id) delete
-
+    else
+      h4.red.lighten-3 You don't have any emergency contacts. You won't be able to start a new trip until you add at least one contact. 
   a(href='contacts/new') 
     button.full-size-btn.btn.amber.lighten-1 Add New Contact
 

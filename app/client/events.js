@@ -7,10 +7,12 @@ $('.deleteContact').on('click', event => {
     type: 'DELETE',
   })
   .done(() => {
-    $(event.target).parents('.card').remove();
+    location.reload();
   })
   .fail(err => {
     console.log('Something went wrong!', err);
   })
 });
+
+
 
