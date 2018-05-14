@@ -5,7 +5,7 @@ block content
   p You'll have a chance to add up to two more emergency contacts once you register.
   form(name="emergency-contacts" method="post" action="/register/contacts")
     label(for="name") Name
-    input.deep-purple.darken-2(name="name" type="text" required)
-    label.deep-purple.darken-2(for="phone_number") Phone Number
+    input(name="name" type="text" required)
+    label(for="phone_number") Phone Number
     input(name="phone_number" type="tel" required) 
-    input.btn.deep-purple.darken-2(type="submit" value="Add")
+    input.btn.amber.lighten-1(type="submit" value="Add")

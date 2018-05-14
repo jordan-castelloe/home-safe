@@ -5,16 +5,16 @@ block content
     and   and I should be back by 
     input(id="return-time" name="return-time" type="time" required).
 
-    button.btn.btn-primary#start-trip Start Trip
+    button.btn.amber.lighten-1#start-trip Start Trip
   
   .trip-in-progress
     p#error
     h5.timer
     label(for="safe-code") When you get back, please enter your safe code.
     input.text(id="safe-code" name="safe-code" type="text" required)
-    button.btn#safe-code-btn I'm back!
+    button.btn.amber.lighten-1#safe-code-btn I'm back!
   
     a(href='/trip/start')
-      button.btn#start-over Start Another Trip
+      button.btn.amber.lighten-1#start-over Start Another Trip
     
 
