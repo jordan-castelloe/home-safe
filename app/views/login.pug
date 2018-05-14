@@ -1,13 +1,14 @@
 extends index
 block content 
 
-  if message 
-    h2= message
-    
-  h1 Welcome back.
-  form(name="login" method="POST" action="/login")
-    label(for="email") Email Address
-    input.form-input.text(name="email" type="email" required)
-    label(for="password") Password
-    input.form-input(name="password" type="password" required)
-    input.btn.submit-button.amber.lighten-1(type="submit" value="Log In")
+  .login-container
+    if message 
+      h2= message
+      
+    h1 Welcome back.
+    form(name="login" method="POST" action="/login")
+      label(for="email") Email Address
+      input.form-input.text(name="email" type="email" required)
+      label(for="password") Password
+      input.form-input(name="password" type="password" required)
+      input.btn.submit-button.amber.lighten-1(type="submit" value="Log In")

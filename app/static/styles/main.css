@@ -5,15 +5,21 @@
 }
 
 .container{
-  margin-top: 20vh;
+  margin: 4rem auto;
 }
+
 p{
-  font-size: 1.5rem;
+  font-size: 2rem;
 }
 
 h1{
   font-size: 7rem;
   margin-bottom: 4rem;
+}
+
+h3 {
+  font-size: 4.6rem;
+  margin-bottom: 2rem;
 }
 
 
@@ -48,6 +54,14 @@ nav i.nav-item{
 nav .center{
   width: auto;
 }
+
+
+/* Login */
+.login-container{
+  margin-top: 20vh;
+}
+
+
 @media only screen and (min-width: 768px) {
     /* For desktop: */
  
