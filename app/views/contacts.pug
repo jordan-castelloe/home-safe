@@ -1,7 +1,7 @@
 extends index
 block content 
-  h1 Emergency Contacts
-  a(href='contacts/new')  
+  h3 Emergency Contacts
+   
   if contactArray
     each contact in contactArray
       .card
@@ -15,5 +15,6 @@ block content
             button.deleteContact.btn-floating.waves-effect.waves-light.deep-orange.lighten-2#contact.id 
               i.material-icons delete
 
-  button.full-size-btn.btn.amber.lighten-1 Add New Contact
+  a(href='contacts/new') 
+    button.full-size-btn.btn.amber.lighten-1 Add New Contact
 

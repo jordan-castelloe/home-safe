@@ -1,11 +1,11 @@
 extends index
 block content 
 
-  h3 Enter your first emergency contact.
-  p You'll have a chance to add up to two more emergency contacts once you register.
+  h3 Who should we text if you're in trouble?
+  p.flow-text You can have a maximum of three emergency contacts.
   form(name="emergency-contacts" method="post" action="/register/contacts")
     label(for="name") Name
-    input(name="name" type="text" required)
+    input.form-input(name="name" type="text" required)
     label(for="phone_number") Phone Number
-    input(name="phone_number" type="tel" required) 
-    input.btn.amber.lighten-1(type="submit" value="Add")
+    input.form-input(name="phone_number" type="tel" required) 
+    input.btn.full-size-btn.amber.lighten-1(type="submit" value="Add")
