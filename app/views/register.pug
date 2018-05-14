@@ -2,9 +2,10 @@ extends index
 block content 
 
   if message 
-    h2= message
+    h5= message
     
-  h1 Sign Up
+  h3 Sign Up
+  p Tell us a little bit about yourself.
   form(name="register" method="post" action="/register")
     label(for="first_name") First name
     input.text(id="first_name" name="first_name" type="text" required)
@@ -17,16 +18,20 @@ block content
     label(for="confim_password") Confirm Password
     input(name="confirm_password" type="password" required)
 
-    h2 Safe Code 
+    h4 Safe Code 
+    p When you make it home safe, you'll enter a four-digit safe code so we know not to text your emergency contacts. Good safe codes are easy to remember. (Don't worry too much about making it hard to guess.)
     label(for="safe_code") Safe Code
     input(name="safe_code" type="text" required)
     label(for="confirm_safe_code") Confirm Safe Code
     input(name="confirm_safe_code" type="text" required)
 
-    h2 Emergency Code 
+    h4 Emergency Code 
+    p If something sketchy happens while you're out, you can enter your emergency code and we'll immediately alert your emergency contacts. 
+    i.material-icons
+      lightbulb_outline
     label(for="emergency_code") Emergency Code
     input(name="emergency_code" type="text" required)
     label(for="confirm_emergency_code") Confirm Emergency Code
     input(name="confirm_emergency_code" type="text" required)
 
-    input.btn(type="submit" value="Register")
+    input.btn.amber.lighten-1(type="submit" value="Register")

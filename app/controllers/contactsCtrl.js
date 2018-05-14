@@ -61,7 +61,7 @@ module.exports.editContact = (req, res, next) => {
   }
   Emergency_Contact.update(newData, { where: { id: req.params.id } })
     .then(newContact => {
-      res.redirect('/contacts')
+      res.status(200).redirect('/contacts');
     })
     .catch(err => {
       console.log(err);
@@ -73,8 +73,8 @@ module.exports.editContact = (req, res, next) => {
 module.exports.deleteContact = (req, res, next) => {
   const { Emergency_Contact } = req.app.get('models');
   Emergency_Contact.destroy({ where: { id: req.params.id } })
-    .then(() => {
-      res.redirect('/contacts');
+    .then(data => {
+      res.status(200).send('OK');
     })
     .catch(err => next(err));
 }

@@ -6,7 +6,7 @@ $('.deleteContact').on('click', event => {
     url: `/contacts/${contactId}`,
     type: 'DELETE',
   })
-  .done(result => {
+  .done(() => {
     console.log('event.target', event.target);
     $(event.target).remove();
   })
@@ -14,3 +14,4 @@ $('.deleteContact').on('click', event => {
     console.log('Something went wrong!', err);
   })
 });
+

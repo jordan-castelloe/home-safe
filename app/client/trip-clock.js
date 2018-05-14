@@ -118,23 +118,18 @@ const sendTexts = (trip) => {
   })
 }
 
-const alertContacts = (trip) => {
-  trip = JSON.parse(localStorage.getItem("trip"));
-  console.log('trip', trip);
-  sendTexts(trip)
-}
 
-//Called if user enters emergency passcode OR if the timer finishes without a safecode response
-// const alertContacts = () => {
-//   trip = JSON.parse(localStorage.getItem("trip"));
-//   getCurrentLocation()
-//   .then(trip=> {
-//     sendTexts(trip)
-//   })
-//   .catch(err => {
-//     console.log(err);
-//   })
-// }
+// Called if user enters emergency passcode OR if the timer finishes without a safecode response
+const alertContacts = () => {
+  trip = JSON.parse(localStorage.getItem("trip"));
+  getCurrentLocation()
+  .then(trip=> {
+    sendTexts(trip)
+  })
+  .catch(err => {
+    console.log(err);
+  })
+}
 
 // Accepts number of milleseconds remaining, converts to hours, minutes, etc.
 const calculateTimeRemaining = (milleseconds) => {
@@ -160,7 +155,7 @@ const displayTimer = ({hours, minutes, seconds, milleseconds}) => {
   seconds = seconds < 10 ? `0${seconds}` : seconds;
 
   // print the remaining time to the dom
-  $('.timer').text(`Time Remaining: ${hours}:${minutes}:${seconds}`);
+  $('.timer').text(`We'll text your emergency contacts in ${hours}:${minutes}:${seconds}`);
 }
 
 
