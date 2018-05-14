@@ -82,6 +82,21 @@ nav .center{
   margin-top: 4rem;
 }
 
+/* Contacts */
+.button-group{
+  margin: 4rem auto 2rem auto;
+  width: 16rem;
+}
+
+.button-group button{
+  width: 8rem;
+  height: 8rem;
+}
+
+.button-group button i{
+  font-size: 4rem
+}
+
 @media only screen and (min-width: 768px) {
     /* For desktop: */
  
