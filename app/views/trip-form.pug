@@ -1,20 +1,38 @@
 extends index
 block content 
-  p.start-trip I'm going 
-    input.text(id="activity" name="activity" type="text" placeholder="on a run at the Volunteer Trail" required)
-    and   and I should be back by 
-    input(id="return-time" name="return-time" type="time" required).
+ 
+  
+  .start-trip
+    h3 Where are you off to?
+    label(for="activity") I'm going 
+    input.text.form-input(id="activity" name="activity" type="text" placeholder="on a run at the Volunteer Trail" required)
+    label(for="return-time") I should be back by 
+    input.form-input(id="return-time" name="return-time" type="time" required).
 
-    button.btn.amber.lighten-1#start-trip Start Trip
+    .sample-texts
+      .card
+        .card-content
+          h4.card-title Here's what we'll text your friends if you don't make it back by your return time:
+          p.flow-text.sample-msg Hi there! Name went to location and didn't make it back in time. Would you mind checking up on them?
+            span.gps  Their last known location is location location.
+
+      .card
+        .card-content
+          h4.card-title Here's what we'll text them if you enter your emergency code:
+          p.flow-text.sample-msg Hi there! Name went to location and entered their emergency code, which means might be in trouble. Would you mind checking up on them?
+            span.gps  Their last known location is location location.
+    button.full-size-btn.btn.amber.lighten-1#start-trip Start Trip
   
   .trip-in-progress
+    h3 Be safe! Make good choices!
     p#error
     h5.timer
-    label(for="safe-code") When you get back, please enter your safe code.
-    input.text(id="safe-code" name="safe-code" type="text" required)
-    button.btn.amber.lighten-1#safe-code-btn I'm back!
+    .safe-code-input
+      label(for="safe-code") When you get back, please enter your safe code.
+      input.form-input.text(id="safe-code" name="safe-code" type="text" required)
+    button.full-size-btn.btn.amber.lighten-1#safe-code-btn I'm back!
   
     a(href='/trip/start')
-      button.btn.amber.lighten-1#start-over Start Another Trip
+      button.full-size-btn.btn.amber.lighten-1#start-over Start Another Trip
     
 

@@ -68,6 +68,20 @@ nav .center{
   font-size: 2rem;
 }
 
+/* Trip Form*/
+.sample-texts{
+  margin-top: 3rem;
+}
+
+.timer{
+  margin-top: 4rem;
+  font-size: 4rem;
+}
+
+.safe-code-input{
+  margin-top: 4rem;
+}
+
 @media only screen and (min-width: 768px) {
     /* For desktop: */
  
