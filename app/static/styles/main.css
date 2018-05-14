@@ -34,7 +34,7 @@ input.form-input{
     height: 8vh !important;
 }
 
-input.submit-button{
+.full-size-btn{
   margin-top: 6vh;
   width: 85vw;
   height: 8rem;
@@ -61,6 +61,12 @@ nav .center{
   margin-top: 20vh;
 }
 
+
+/* Tutorial */
+.tutorial > li {
+  line-height: 4rem;
+  font-size: 2rem;
+}
 
 @media only screen and (min-width: 768px) {
     /* For desktop: */
