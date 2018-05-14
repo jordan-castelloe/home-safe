@@ -1,5 +1,9 @@
 
 /* General Styles */
+.center{
+  margin: auto;
+}
+
 .container{
   margin-top: 20vh;
 }
@@ -31,16 +35,19 @@ input.submit-button{
   font-size: 3rem;
 }
 
-
-/* Nav */
+/* NavBar */
 nav.navbar{
   height: 12rem;
 }
 
-.nav-item{
-  font-size: 4rem;
+nav i.nav-item{
+  font-size: 6.7rem;
+  margin: 0 1rem 0 1rem;
 }
 
+nav .center{
+  width: auto;
+}
 @media only screen and (min-width: 768px) {
     /* For desktop: */
  
