@@ -1,3 +1,38 @@
+.container{
+  margin-top: 20vh;
+}
 p{
   font-size: 1.5rem;
+}
+
+h1{
+  font-size: 7rem;
+  margin-bottom: 4rem;
+}
+
+
+label{
+  font-size: 2rem;
+  line-height: 3rem;
+}
+
+input.form-input{
+    font-size: 3rem !important;
+    line-height: 3.7rem;
+    height: 8vh !important;
+}
+
+input.submit-button{
+  margin-top: 6vh;
+  width: 85vw;
+  height: 8rem;
+  font-size: 3rem;
+}
+
+
+
+@media only screen and (min-width: 768px) {
+    /* For desktop: */
+ 
+
 }
