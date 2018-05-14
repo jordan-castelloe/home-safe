@@ -1,13 +1,20 @@
 extends index
 block content 
-  h1 Emergency Contacts
-  a(href='contacts/new')
-    button.btn.amber.lighten-1 Add New Contact
+  h3 Emergency Contacts
+   
   if contactArray
     each contact in contactArray
-      p=contact.name
-      p=contact.phone_number
-      a(href=`/contacts/edit/${contact.id}`)
-        button.btn.amber.lighten-1 Edit 
-      button.btn.deleteContact.deep-orange.lighten-2#contact.id Delete
+      .card
+        .card-content
+          h4.card-title.center-align=contact.name
+          p.flow-text.center-align=contact.phone_number
+          .button-group
+            a(href=`/contacts/edit/${contact.id}`)
+              button.btn-floating.waves-effect.waves-light.green.lighten-2 
+                i.material-icons edit
+            button(id=contact.id).deleteContact.btn-floating.waves-effect.waves-light.deep-orange.lighten-2
+              i.material-icons(id=contact.id) delete
+
+  a(href='contacts/new') 
+    button.full-size-btn.btn.amber.lighten-1 Add New Contact
 
