@@ -12,8 +12,8 @@ block content
             a(href=`/contacts/edit/${contact.id}`)
               button.btn-floating.waves-effect.waves-light.green.lighten-2 
                 i.material-icons edit
-            button.deleteContact.btn-floating.waves-effect.waves-light.deep-orange.lighten-2#contact.id 
-              i.material-icons delete
+            button(id=contact.id).deleteContact.btn-floating.waves-effect.waves-light.deep-orange.lighten-2
+              i.material-icons(id=contact.id) delete
 
   a(href='contacts/new') 
     button.full-size-btn.btn.amber.lighten-1 Add New Contact
