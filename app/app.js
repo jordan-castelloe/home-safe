@@ -13,7 +13,7 @@ require('dotenv').config()
 
 app.set('models', require('./db/models')); 
 
-app.use(express.static(__dirname + '/static')); // maybe can get rid of this!!
+app.use(express.static(__dirname + '/static')); 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'pug');
 
