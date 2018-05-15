@@ -15,18 +15,18 @@ $('.deleteContact').on('click', event => {
 });
 
 
-$('#edit-settings').click(() => {
-  $.ajax({
-    url: `/settings/edit`,
-    type: 'GET',
-  })
-  .done(() => {
-    console.log('in the done!');
-  })
-  .fail(err => {
-    console.log('Something went wrong!', err);
-  })
-})
+// $('#edit-settings').click(() => {
+//   $.ajax({
+//     url: ``,
+//     type: 'GET',
+//   })
+//   .done(() => {
+//     console.log('in the done!');
+//   })
+//   .fail(err => {
+//     console.log('Something went wrong!', err);
+//   })
+// })
 
 $('#logout').click(() => {
   $.ajax({

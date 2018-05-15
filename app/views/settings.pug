@@ -11,7 +11,8 @@ block content
   p.flow-text #{safe_code}
   h4 Emergency Code
   p.flow-text #{emergency_code}
-
-  button.btn.full-size-btn.amber.lighten-1#edit-settings Edit Your Information
+  
+  a(href='/settings/edit')
+    button.btn.full-size-btn.amber.lighten-1#edit-settings Edit Your Information
   
   button.btn.full-size-btn.deep-orange.lighten-2#logout Log Out

@@ -21,37 +21,36 @@ module.exports.displaySettings = (req, res, next) => {
   const { User } = req.app.get('models');
   User.findById(req.user.id)
     .then(({ dataValues }) => {
-      console.log('!!!!!!!!!!!!!!!!! DATA VALUES', dataValues);
-      res.render('settings', dataValues);
+      res.status(200).render('settings', dataValues);
     })
     .catch(err => res.status(404));
 };
 
-module.exports.displayEditSettingsForm = (req, res, next) => {
+module.exports.displaySettingsForm = (req, res, next) => {
+  console.log('!!!!!!!!!!!!!!!!!!!!!! DISPLAY SETTINGS FORM CALLED');
   const { User } = req.app.get('models');
   User.findById(req.user.id)
-    .then(({ dataValues }) => {
-      res.render('edit-settings', dataValues);
-    })
-    .catch(err => res.status(404));
+  .then(({ dataValues }) => {
+    console.log('!!!!!!! DATA VALUES!!', dataValues);
+    res.status(200).render('edit-settings', dataValues);
+  })
+  .catch(err => res.status(404));
 }
 
-// module.exports.editUserSettings = (req, res, next) => {
-//   const { User } = req.app.get('models');
-//   const newData = {
-//     first_name: req.body.first_name,
-//     last_name: req.body.last_name,
-//     street_address: req.body.street_address,
-//     city: req.body.city,
-//     state: req.body.state,
-//     postal_code: req.body.postal_code,
-//     phone_number: req.body.phone_number,
-//   }
-//   User.update(newData, { where: { id: req.user.id } })
-//     .then(updatedUser => {
-//       module.exports.displayUsersSettings(req, res, next);
-//     })
-//     .catch(err => {
-//       module.exports.renderEditForm(req, res, next);
-//     })
-// }
+module.exports.editSettings = (req, res, next) => {
+  const { User } = req.app.get('models');
+  const newData = {
+    first_name: req.body.first_name,
+    last_name: req.body.last_name,
+    email: req.body.email,
+    safe_code: req.body.safe_code,
+    emergency_code: req.body.emergency_code
+  }
+  User.update(newData, { where: { id: req.user.id } })
+  .then(updatedUser => {
+    module.exports.displaySettings(req, res, next);
+  })
+  .catch(err => {
+    module.exports.renderEditForm(req, res, next);
+  })
+}
