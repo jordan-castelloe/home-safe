@@ -15,4 +15,12 @@ $('.deleteContact').on('click', event => {
 });
 
 
+$('#edit-settings').click(() => {
+  console.log('you clicked the edit settings button!');
+})
+
+$('#logout').click(() => {
+  console.log('you clicked logout!');
+})
+
 
