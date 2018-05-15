@@ -88,16 +88,10 @@ $('#eCode').keyup(() => {
   let eCode = $('#eCode').val();
   let messageDiv = $('#eCodeMessage');
   validateCode(eCode, messageDiv, 'eCode');
-  checkDuplicates($('eCode').val(), $('safeCode').val())
+  console.log('safe code val in event listner', $('#safeCode').val())
+  checkDuplicates($('#eCode').val(), $('#safeCode').val())
   checkSubmitBtn(validator);
 })
-
-// Check for equality on change rather than key up so you check the complete code
-$('#eCode').change(() => {
-  checkDuplicates($('#eCode').val());
-  checkSubmitBtn(validator);
-})
-
 
 // Check to make sure that confirmation codes match
 $('#safeCodeConfirm').keyup(() => {
