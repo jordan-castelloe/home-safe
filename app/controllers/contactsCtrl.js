@@ -5,24 +5,68 @@ module.exports.displayContactsForm = (req, res, next) => {
   res.render('add-emergency-contact');
 }
 
+const checkForContacts = (req, res, next) => {
+  return new Promise((resolve, reject) => {
+    const { Emergency_Contact } = req.app.get("models");
+    Emergency_Contact.findAll({
+      raw: true,
+      where: {
+        user_id: req.user.id
+      }
+    })
+    .then(contactArray => {
+      if(contactArray.length <= 3){
+        resolve(contactArray);
+      } else {
+        resolve(false);
+      }
+    })
+    .catch(err => {
+      reject(err);
+    })
+  })
+}
+
+const createNewContact = (req, res, next) => {
+  const { Emergency_Contact } = req.app.get("models");
+  return new Promise((resolve, reject) => {
+    const newContact = {
+      name: req.body.name,
+      phone_number: req.body.phone_number,
+      user_id: req.user.id
+    }
+    Emergency_Contact.create(newContact)
+    .then((data) => {
+      resolve(data);
+    })
+    .catch(err => {
+      next(err);
+    })
+  })
+}
+
 // Called on a POST request to register/ contacts (i.e. when the user clicks 'Add' to add a new emergency contact)
 module.exports.addEmergencyContacts = (req, res, next) => {
   const { Emergency_Contact } = req.app.get("models");
-
-  const newContact = {
-    name: req.body.name,
-    phone_number: req.body.phone_number,
-    user_id: req.user.id
-  }
-  Emergency_Contact.create(newContact)
-    .then(() => {
-      res.redirect('/trip');
-    })
-    .catch(err => {
-      console.log(err);
-      // TODO: add helpful error message
-      // next(err);
-    })
+  checkForContacts(req, res, next)
+  .then(contactArray => {
+    if(!contactArray){
+      console.log('YOU HAVE MORE THAN THREE CONTACTS MOTHERFUCKER')
+      res.status(400).send('Sorry! You can only have three contats.')
+    } else {
+      createNewContact(req, res, next)
+      .then(data => {
+        console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!! REQ ROUTE PATH', req.route.path);
+      })
+      .catch(err => {
+        next(err);
+      })
+    }
+  })
+  .catch(err => {
+    console.log('Err', err);
+    next(err);
+  })
 }
 
 // List all of a user's contacts
