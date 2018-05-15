@@ -66,7 +66,6 @@ const confirmCodes = (safeCode, confirmation, messageDiv, codeType) => {
 
 // Check to make sure emergency code and safe codes are different
 const checkDuplicates = (eCode, safeCode) => {
-  console.log('ecode', eCode, 'safeCode', safeCode);
   if(eCode !== safeCode){
     validator.duplicates = false;
   } else if (eCode === safeCode) {
@@ -88,7 +87,6 @@ $('#eCode').keyup(() => {
   let eCode = $('#eCode').val();
   let messageDiv = $('#eCodeMessage');
   validateCode(eCode, messageDiv, 'eCode');
-  console.log('safe code val in event listner', $('#safeCode').val())
   checkDuplicates($('#eCode').val(), $('#safeCode').val())
   checkSubmitBtn(validator);
 })
