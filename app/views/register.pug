@@ -20,16 +20,20 @@ block content
 
     h3 Safe Code 
     p.flow-text When you make it home safe, you'll enter a four-digit safe code so we know not to text your emergency contacts. Good safe codes are easy to remember. (Don't worry too much about making it hard to guess.)
+    p.flow-text#safeCodeMessage
     label(for="safe_code") Safe Code
-    input(name="safe_code" type="text" required)
+    input#safeCode(name="safe_code" type="text" required)
+    p.flow-text#safeConfirmationMsg
     label(for="confirm_safe_code") Confirm Safe Code
-    input(name="confirm_safe_code" type="text" required)
+    input#safeCodeConfirm(name="confirm_safe_code" type="text" required)
 
     h3 Emergency Code 
     p.flow-text If something sketchy happens while you're out, you can enter your emergency code and we'll immediately alert your emergency contacts. 
+    p.flow-text#eCodeMessage
     label(for="emergency_code") Emergency Code
-    input(name="emergency_code" type="text" required)
+    input#eCode(name="emergency_code" type="text" required)
+    p.flow-text#eConfirmationMsg
     label(for="confirm_emergency_code") Confirm Emergency Code
-    input(name="confirm_emergency_code" type="text" required)
+    input#eCodeConfirm(name="confirm_emergency_code" type="text" required)
 
-    input.btn.full-size-btn.amber.lighten-1(type="submit" value="Register")
+    input#submitBtn.btn.full-size-btn.amber.lighten-1(type="submit" value="Register")

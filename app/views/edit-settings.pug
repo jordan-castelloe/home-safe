@@ -9,9 +9,11 @@ block content
     label(for="email") Email
     input.form-input(type="email" name="email" value=email required)
     label(for="safe_code") Safe Code
-    input.form-input(type="text" name="safe_code" value=safe_code required)
+    p.flow-text#editSafeCodeMsg
+    input#editSafeCode.form-input(type="text" name="safe_code" value=safe_code required)
     label(for="emergency_code") Emergency Code
-    input.form-input(type="text" name="emergency_code" value=emergency_code required)
+    p.flow-text#editECodeMsg
+    input#editECode.form-input(type="text" name="emergency_code" value=emergency_code required)
     
 
-    button.full-size-btn.btn.amber.lighten-1(type="submit" text="Submit") OK
+    button#submitEdit.full-size-btn.btn.amber.lighten-1(type="submit" text="Submit") OK
