@@ -1,12 +1,17 @@
 extends index
 block content
-  h1 Update Your Information
+  h3 Update Your Information
   form(action="/settings/edit" method="POST")
-    input(type="text" name="first_name" value=first_name required)
-    input(type="text" name="last_name" value=last_name required)
-    input(type="email" name="email" value=email required)
-    input(type="text" name="safe_code" value=safe_code required)
-    input(type="text" name="emergency_code" value=emergency_code required)
+    label(for="first_name") First Name
+    input.form-input(type="text" name="first_name" value=first_name required)
+    label(for="last_name") Last Name
+    input.form-input(type="text" name="last_name" value=last_name required)
+    label(for="email") Email
+    input.form-input(type="email" name="email" value=email required)
+    label(for="safe_code") Safe Code
+    input.form-input(type="text" name="safe_code" value=safe_code required)
+    label(for="emergency_code") Emergency Code
+    input.form-input(type="text" name="emergency_code" value=emergency_code required)
     
 
-    button(type="submit" text="Submit") OK
+    button.full-size-btn.btn.amber.lighten-1(type="submit" text="Submit") OK

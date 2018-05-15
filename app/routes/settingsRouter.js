@@ -9,6 +9,6 @@ const { logout } = require('../controllers/authCtrl');
 settingsRouter.get('/', displaySettings);
 settingsRouter.post('/edit', editSettings);
 settingsRouter.get('/edit', displaySettingsForm);
-settingsRouter.post('/logout', logout)
+settingsRouter.get('/logout', logout)
 
 module.exports = settingsRouter;
