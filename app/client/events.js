@@ -14,14 +14,5 @@ $('.deleteContact').on('click', event => {
   })
 });
 
-$('#logout').click(() => {
-  $.ajax({
-    url: `/settings/logout`,
-    type: 'POST',
-  })
-  .fail(err => {
-    console.log('Something went wrong!', err);
-  })
-})
 
 
