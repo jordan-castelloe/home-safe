@@ -18,7 +18,6 @@ const validatorObj = {
 
 // Check to see if we should enable the submit button
 const checkSubmitBtn = ({safeCode, eCode, duplicates}) => {
-  console.log('duplicates in check submit', duplicates)
   if(safeCode.valid && safeCode.matching && eCode.valid && eCode.matching && !duplicates){
     $('#submitBtn').prop('disabled', false);
   } else {
@@ -59,8 +58,6 @@ const confirmCodes = (safeCode, confirmation, messageDiv, codeType) => {
 // Check to make sure emergency code and safe codes are different
 const checkDuplicates = (eCode) => {
   if(eCode !== $('#safeCode').val()){
-    console.log('ecode in check duplicates', eCode);
-    console.log('safe code in check duplicates', $('#safeCode').val())
     validatorObj.duplicates = false;
   } else {
     $('#eCodeMessage').text("Your emergency code must be different than your safe code.");
@@ -82,8 +79,8 @@ $('#eCode').keyup(() => {
   validateCode(eCode, messageDiv, 'eCode');
 })
 
+// Check for equality on change rather than key up so you check the complete code
 $('#eCode').change(() => {
-  console.log('input changed');
   checkDuplicates($('#eCode').val());
 })
 
