@@ -32,7 +32,8 @@ block content
     p.flow-text#eCodeMessage
     label(for="emergency_code") Emergency Code
     input#eCode(name="emergency_code" type="text" required)
+    p.flow-text#eConfirmationMsg
     label(for="confirm_emergency_code") Confirm Emergency Code
     input#eCodeConfirm(name="confirm_emergency_code" type="text" required)
 
-    input.btn.full-size-btn.amber.lighten-1(type="submit" value="Register")
+    input#submitBtn.btn.full-size-btn.amber.lighten-1(type="submit" value="Register")
