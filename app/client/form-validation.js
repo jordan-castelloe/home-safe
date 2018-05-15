@@ -1,7 +1,7 @@
 'use strict';
-let message;
 
 const validateCode = (codeInput, messageDiv) => {
+  let message;
   if (codeInput.length !== 4 && !codeInput.match('^[0-9]*$')) {
     message = 'Your safe code must be exactly four digits!';
   } else if (!codeInput.match('^[0-9]*$')) {
@@ -13,6 +13,8 @@ const validateCode = (codeInput, messageDiv) => {
   }
   messageDiv.text(message);
 }
+
+
 
 // Validate safe codes
 $('#safeCode').keyup(() => {
@@ -27,3 +29,18 @@ $('#eCode').keyup(() => {
   let messageDiv = $('#eCodeMessage');
   validateCode(eCode, messageDiv);
 })
+
+// Check to make sure that confirmation codes match
+$('#safeCodeConfirm').keyup(() => {
+  let message;
+  if($('#safeCode').val() !== $('#safeCodeConfirm').val()){
+    message = 'Your codes don\'t match!';
+  } else {
+    message = 'Great! Your codes match!'
+  }
+  $('#safeConfirmationMsg').text(message)
+})
+// Check to make sure that safe code adnd emergency codes aren't the same
+
+
+// disable the submit button until there are no errors
