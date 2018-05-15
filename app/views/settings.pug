@@ -1,0 +1,23 @@
+//- first_name: 'Jordan',
+//-   last_name: 'Castelloe',
+//-   email: 'jordan.castelloe@gmail.com',
+//-   password: '$2a$08$vPa38J6/D3hPane3edwiseIPt7T1t5H/ykClCaXxXfglhBU2ZKApG',
+//-   safe_code: 8319,
+//-   emergency_code: 8318,
+//-   message_count: null,
+//-   createdAt: 2018-05-13T21:04:04.258Z,
+//-   updatedAt: 2018-05-13T21:04:04.258Z }
+
+extends index
+block content 
+  h3 User Settings
+  h4 Name
+  p.flow-text #{first_name} #{last_name}
+  h4 Email
+  p.flow-text #{email}
+
+  h3 Secret Codes
+  h4 Safe Code
+  p.flow-text #{safe_code}
+  h4 Emergency Code
+  p.flow-text #{emergency_code}
