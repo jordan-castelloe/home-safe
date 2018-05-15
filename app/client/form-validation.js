@@ -108,7 +108,6 @@ $('#eCodeConfirm').keyup(() => {
   confirmCodes(eCode, confirmation, messageDiv, 'eCode');
 });
 
-
 // EDIT SETTINGS VIEW
 
 // Validate safe codes
