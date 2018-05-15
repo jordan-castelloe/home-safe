@@ -27,14 +27,14 @@ module.exports.displaySettings = (req, res, next) => {
     .catch(err => res.status(404));
 };
 
-// module.exports.renderEditForm = (req, res, next) => {
-//   const { User } = req.app.get('models');
-//   User.findById(req.user.id)
-//     .then(({ dataValues }) => {
-//       res.render('edit-settings', dataValues);
-//     })
-//     .catch(err => res.status(404));
-// }
+module.exports.displayEditSettingsForm = (req, res, next) => {
+  const { User } = req.app.get('models');
+  User.findById(req.user.id)
+    .then(({ dataValues }) => {
+      res.render('edit-settings', dataValues);
+    })
+    .catch(err => res.status(404));
+}
 
 // module.exports.editUserSettings = (req, res, next) => {
 //   const { User } = req.app.get('models');

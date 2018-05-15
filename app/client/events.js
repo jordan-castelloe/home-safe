@@ -16,11 +16,29 @@ $('.deleteContact').on('click', event => {
 
 
 $('#edit-settings').click(() => {
-  console.log('you clicked the edit settings button!');
+  $.ajax({
+    url: `/settings/edit`,
+    type: 'GET',
+  })
+  .done(() => {
+    console.log('in the done!');
+  })
+  .fail(err => {
+    console.log('Something went wrong!', err);
+  })
 })
 
 $('#logout').click(() => {
-  console.log('you clicked logout!');
+  $.ajax({
+    url: `/settings/logout`,
+    type: 'POST',
+  })
+  .done(() => {
+    console.log('in the done!');
+  })
+  .fail(err => {
+    console.log('Something went wrong!', err);
+  })
 })
 
 
