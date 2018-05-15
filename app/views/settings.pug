@@ -1,0 +1,18 @@
+extends index
+block content 
+  h3.center-align User Settings
+  h4 Name
+  p.flow-text #{first_name} #{last_name}
+  h4 Email
+  p.flow-text #{email}
+
+  h3.center-align Secret Codes
+  h4 Safe Code
+  p.flow-text #{safe_code}
+  h4 Emergency Code
+  p.flow-text #{emergency_code}
+  
+  a(href='/settings/edit')
+    button.btn.full-size-btn.amber.lighten-1#edit-settings Edit Your Information
+  a(href='/settings/logout')
+    button.btn.full-size-btn.deep-orange.lighten-2#logout Log Out

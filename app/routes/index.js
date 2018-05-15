@@ -11,6 +11,6 @@ router.use(checkAuth);
 // Mount all trip-related routes
 router.use('/trip', require('./tripRouter'));
 router.use('/contacts', require('./contactsRouter'));
-
+router.use('/settings', require('./settingsRouter'));
 
 module.exports = router;
