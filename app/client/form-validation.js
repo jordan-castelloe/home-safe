@@ -12,22 +12,25 @@ const validatorObj = {
   eCode : {
     valid: false,
     matching: false
-  }
+  },
+  duplicates: true
 }
-
 
 // Check to see if we should enable the submit button
-const checkSubmitBtn = ({safeCode, eCode}) => {
-  if(safeCode.valid && safeCode.matching && eCode.valid && eCode.matching){
-    console.log('you can submit!');
+const checkSubmitBtn = ({safeCode, eCode, duplicates}) => {
+  console.log('duplicates in check submit', duplicates)
+  if(safeCode.valid && safeCode.matching && eCode.valid && eCode.matching && !duplicates){
     $('#submitBtn').prop('disabled', false);
+  } else {
+    $('#submitBtn').prop('disabled', true);
   }
 }
 
+// Checks to see if the code is four digits and only numbers
 const validateCode = (codeInput, messageDiv, codeType) => {
   let message;
   if (codeInput.length !== 4 && !codeInput.match('^[0-9]*$')) {
-    message = 'Your safe code must be exactly four digits!';
+    message = 'Your safe code must be exactly four digits.';
   } else if (!codeInput.match('^[0-9]*$')) {
     message = 'Your safe code must contain only numbers.';
   } else if (codeInput.length !== 4) {
@@ -37,10 +40,10 @@ const validateCode = (codeInput, messageDiv, codeType) => {
     validatorObj[codeType].valid = true;
   }
   messageDiv.text(message);
-  console.log(validatorObj);
   checkSubmitBtn(validatorObj);
 }
 
+// Checks to see if the code matches the confirmation code
 const confirmCodes = (safeCode, confirmation, messageDiv, codeType) => {
   let message;
   if (safeCode !== confirmation) {
@@ -50,8 +53,18 @@ const confirmCodes = (safeCode, confirmation, messageDiv, codeType) => {
     validatorObj[codeType].matching = true;
   }
   messageDiv.text(message);
-  console.log(validatorObj);
   checkSubmitBtn(validatorObj);
+}
+
+// Check to make sure emergency code and safe codes are different
+const checkDuplicates = (eCode) => {
+  if(eCode !== $('#safeCode').val()){
+    console.log('ecode in check duplicates', eCode);
+    console.log('safe code in check duplicates', $('#safeCode').val())
+    validatorObj.duplicates = false;
+  } else {
+    $('#eCodeMessage').text("Your emergency code must be different than your safe code.");
+  }
 }
 
 
@@ -68,6 +81,12 @@ $('#eCode').keyup(() => {
   let messageDiv = $('#eCodeMessage');
   validateCode(eCode, messageDiv, 'eCode');
 })
+
+$('#eCode').change(() => {
+  console.log('input changed');
+  checkDuplicates($('#eCode').val());
+})
+
 
 // Check to make sure that confirmation codes match
 $('#safeCodeConfirm').keyup(() => {
