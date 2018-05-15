@@ -1,22 +1,6 @@
 'use strict';
 
 
-  // find user by current user id
-  // pass theri information into pug template
-  // make pug template
-  // AT THAT POINT settings form should display
-  // there should be an edit button and a logout button
-  // logout should take you back to login
-  // edit should take you to a form with all your default information
-  // name, password
-
-
-  // FORM VALIDATION
-  
-  // ERROR HANDLING
-
-
-
 module.exports.displaySettings = (req, res, next) => {
   const { User } = req.app.get('models');
   User.findById(req.user.id)
@@ -27,11 +11,9 @@ module.exports.displaySettings = (req, res, next) => {
 };
 
 module.exports.displaySettingsForm = (req, res, next) => {
-  console.log('!!!!!!!!!!!!!!!!!!!!!! DISPLAY SETTINGS FORM CALLED');
   const { User } = req.app.get('models');
   User.findById(req.user.id)
   .then(({ dataValues }) => {
-    console.log('!!!!!!! DATA VALUES!!', dataValues);
     res.status(200).render('edit-settings', dataValues);
   })
   .catch(err => res.status(404));
