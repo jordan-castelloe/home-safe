@@ -42,9 +42,7 @@ module.exports.getUserCodes = (req, res, next) => {
 
 const buildMessage = ({ activity, lat, long, emergencyCode, returnTime }, contactName, userName) => {
   const greeting = `Hi ${contactName}, your friend ${userName} went ${activity}.`;
-  console.log('!!!!!!!!!!!!!!!! type of emergency code', emergencyCode, typeof emergencyCode);
   const urgency = emergencyCode ? `They entered their emergency code, which means they might be in trouble.` : `They thought they'd be back by ${returnTime} but they haven't checked in yet.`;
-  console.log('!!!!!!!!!!!!!!!! THIS IS URGENCY', urgency);
   const location = lat && long ? `Their last known location is: ${lat} lat, ${long} long.` : ``;
   const textMessage = `${greeting} ${urgency} ${location}  Would you mind checking up on them?`
   return textMessage;
@@ -54,16 +52,14 @@ const sendToTwilio = (contactArray, req) => {
   const twilio = require('twilio');
   const client = new twilio(process.env.TWILIO_ACCOUNT_SID,
     process.env.TWILIO_AUTH_TOKEN);
-  console.log('!!!!!!!!!!!!!!!!!!!!!!!! REQ', req);
   return Promise.all(
     contactArray.map(contact => {
       let message = buildMessage(req, contact.name, contact.first_name);
-      console.log('!!!!!!!!!!!!!!!!!!! MESSAGE', message);
-      // return client.messages.create({
-      //   body: message,
-      //   to: contact.phone_number,
-      //   from: process.env.TWILIO_NUMBER
-      // })
+      return client.messages.create({
+        body: message,
+        to: contact.phone_number,
+        from: process.env.TWILIO_NUMBER
+      })
     })
   )
 }
