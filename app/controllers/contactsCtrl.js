@@ -17,7 +17,7 @@ const checkForContacts = (req, res, next) => {
       }
     })
     .then(contactArray => {
-      if(contactArray.length <= 3){
+      if(contactArray.length < 3){
         resolve(contactArray);
       } else {
         resolve(false);
@@ -51,30 +51,40 @@ const createNewContact = (req, res, next) => {
 module.exports.addEmergencyContacts = (req, res, next) => {
   const { Emergency_Contact } = req.app.get("models");
   const path = req.route.path;
-  // If the user is registering, add their contacts without checking and redirect to start trip
-  if(path === '/register/contacts'){
-    createNewContact(req, res, next)
-    .then(data => {
+  createNewContact(req, res, next)
+  .then(data => {
+    if(path === '/register/contacts'){
       res.status(200).redirect('/trip/start');
-    })
-  // if the user is already logged in, check to make sure they have less than three contacts, add their new contact, and then redirect to contacts page
-  } else {
-    checkForContacts(req, res, next)
-    .then(contactArray => {
-      if(!contactArray){
-        console.log('YOU HAVE MORE THAN THREE CONTACTS MOTHERFUCKER')
-        res.status(400).send('Sorry! You can only have three contats.')
-      } else {
-        createNewContact(req, res, next)
-        .then(data => {
-            res.status(200).redirect('/contacts');
-        })
-        .catch(err => {
-          next(err);
-        })
-      }
-    })
-  }
+    } else {
+      res.status(200).redirect('/contacts');
+    }
+  })
+  .catch(err => {
+    next(err);
+  })
+  // If the user is registering, add their contacts without checking and redirect to start trip
+  // if(path === '/register/contacts'){
+  //   createNewContact(req, res, next)
+  //   .then(data => {
+  //     res.status(200).redirect('/trip/start');
+  //   })
+  // // if the user is already logged in, check to make sure they have less than three contacts, add their new contact, and then redirect to contacts page
+  // } else {
+  //   checkForContacts(req, res, next)
+  //   .then(contactArray => {
+  //     if(!contactArray){
+  //       console.log('YOU HAVE MORE THAN THREE CONTACTS MOTHERFUCKER')
+  //       res.status(400).send('Sorry! You can only have three contats.')
+  //     } else {
+  //       createNewContact(req, res, next)
+  //       .then(data => {
+  //           res.status(200).redirect('/contacts');
+  //       })
+  //       .catch(err => {
+  //         next(err);
+  //       })
+  //     }
+  //   })
 }
 
 // List all of a user's contacts
