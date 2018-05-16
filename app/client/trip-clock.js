@@ -6,6 +6,7 @@ $('#start-over').hide();
 
 
 
+
 // ------------------- TRIP TIMER LOGIC ------------------- //
 
 // Process to build the timer:
@@ -121,7 +122,7 @@ const sendTexts = (trip) => {
     data: trip
   })
   .done(successMsg => {
-    $('.timer').text(successMsg);
+    $('#alert').text(successMsg);
     return successMsg
   })
   .fail(err => {
@@ -178,8 +179,11 @@ const displayTimer = ({hours, minutes, seconds, milleseconds}) => {
 // accepts the setInterval object, the message we want to print to the DOM when the timer is over, and a boolean that tells us whether or not to text emergency contacts
 const stopTimer = (timer, { message, sendText, emergencyCode }) => {
   clearInterval(timer);
-  $('.timer').text(message);
+  $('#alert').text(message);
   sendText ? alertContacts() : homeSafe(); 
+  $('#safe-code-btn').remove();
+  $('.timer').remove();
+  $('#start-over').show();
 }
 
 
