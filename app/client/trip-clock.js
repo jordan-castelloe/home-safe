@@ -206,7 +206,6 @@ const startTimer = () => {
 
     // check if the timer gets down to zero and, if so, clear out the interval
     if (millesecondsRemaining === 0) {
-      trip.emergencyCode = false;
       let safeCodeStatus = {
         message: 'You didn\'t make it back in time! Hope you\'re okay. We let your friends know for you.',
         sendText: true,
