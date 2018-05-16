@@ -24,7 +24,17 @@ module.exports.displayTripScreen= (req, res, next) => {
 
 // Displays the form to start a new trip, called when the user clicks on the "start trip button" in start-trip.pug
 module.exports.displayTripForm = (req, res, next) => {
-  res.render('trip-form');
+  const { User } = req.app.get("models");
+  User.findById(req.user.id)
+  .then(({ dataValues: { first_name} }) => {
+    res.render('trip-form', {first_name});
+  })
+  .catch(err => {
+    const error = new Error("Could not find the user's first name to render the trip form.");
+    err.status = 400;
+    next(err);
+  })
+
 }
 
 module.exports.getUserCodes = (req, res, next) => {

@@ -252,3 +252,9 @@ const endTrip = () => {
 $('#testLocationBtn').click(testLocation)
 $('#safe-code-btn').click(endTrip);
 $('#start-trip').click(startTrip);
+
+$('#activity').keyup(() => {
+
+})
+
+$('#')
