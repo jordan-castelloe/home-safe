@@ -8,26 +8,28 @@ block content
     input.text.form-input(id="activity" name="activity" type="text" placeholder="on a run at the Volunteer Trail" required)
     label(for="return-time") I should be back by 
     input.form-input(id="return-time" name="return-time" type="time" required).
-    h5 Geolocation
-    p.flow-text If you run into trouble, we can use geolocation to send your exact coordinates to your emergency contacts. This feature requires a fair amount of internet or cell service and might be very slow. If your signal is low, it's probably better to opt out of geolocation.
-    p.flow-text Test how long it will take to get your coordinates:
-    button.btn.amber.lighten-1#start-trip Get My Location
-    p.flow-text#testLocation 
-    input#geolocation(type="checkbox")
-    label(for="geolocation") Yes, I want to use Geolocation.
+
+    .card
+      .card-content
+        h5.cardTitle Geolocation
+        p.flow-text If you run into trouble, we can use geolocation to send your exact coordinates to your emergency contacts. This feature requires a fair amount of internet or cell service and might be very slow. If your signal is low, it's probably better to opt out of geolocation.
+  
+        button.btn.amber.lighten-1#testLocationBtn See How Long Geolocation Takes
+        p.flow-text#testLocation 
+        input#geolocation(type="checkbox")
+        label(for="geolocation") Yes, I want to use Geolocation.
 
     .sample-texts
       .card
         .card-content
-          h4.card-title Here's what we'll text your friends if you don't make it back by your return time:
+          h5 Here's what we'll text your friends if you don't make it back by your return time:
           p.flow-text.sample-msg Hi there! Name went to location and didn't make it back in time. Would you mind checking up on them?
             span.gps  Their last known location is location location.
 
-      .card
-        .card-content
-          h4.card-title Here's what we'll text them if you enter your emergency code:
+          h5 Here's what we'll text them if you enter your emergency code:
           p.flow-text.sample-msg Hi there! Name went to location and entered their emergency code, which means might be in trouble. Would you mind checking up on them?
             span.gps  Their last known location is location location.
+
     button.full-size-btn.btn.amber.lighten-1#start-trip Start Trip
   
   .trip-in-progress

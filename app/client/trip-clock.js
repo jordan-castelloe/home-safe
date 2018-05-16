@@ -101,6 +101,19 @@ const getCurrentLocation = () => {
   })
 }
 
+// Prints coordiantes to the dom to see how long it takes
+const testLocation = () => {
+  if(!navigator.geolocation){
+    $('#testLocation').text(`Sorry! Your browser doesn't support geolocation.`);
+    $('#testLocationBtn').prop("disabled", true);
+  } else {
+    $('#testLocation').text(`Fetching your location! Please stand by.`);
+    navigator.geolocation.getCurrentPosition(position => {
+      $('#testLocation').text(`Your current coordinates are ${position.coords.latitude} lat, ${position.coords.longitude} long`);
+    })
+  }
+}
+
 const sendTexts = (trip) => {
   $.ajax({
     url: `/trip/send-texts`,
@@ -229,5 +242,6 @@ const endTrip = () => {
   })
 }
 
+$('#testLocationBtn').click(testLocation)
 $('#safe-code-btn').click(endTrip);
 $('#start-trip').click(startTrip);
