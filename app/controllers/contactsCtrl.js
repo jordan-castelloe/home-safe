@@ -7,28 +7,6 @@ module.exports.displayContactsForm = (req, res, next) => {
   res.render('add-emergency-contact', {registration});
 }
 
-const checkForContacts = (req, res, next) => {
-  return new Promise((resolve, reject) => {
-    const { Emergency_Contact } = req.app.get("models");
-    Emergency_Contact.findAll({
-      raw: true,
-      where: {
-        user_id: req.user.id
-      }
-    })
-    .then(contactArray => {
-      if(contactArray.length < 3){
-        resolve(contactArray);
-      } else {
-        resolve(false);
-      }
-    })
-    .catch(err => {
-      reject(err);
-    })
-  })
-}
-
 const createNewContact = (req, res, next) => {
   const { Emergency_Contact } = req.app.get("models");
   return new Promise((resolve, reject) => {
@@ -62,29 +40,6 @@ module.exports.addEmergencyContacts = (req, res, next) => {
   .catch(err => {
     next(err);
   })
-  // If the user is registering, add their contacts without checking and redirect to start trip
-  // if(path === '/register/contacts'){
-  //   createNewContact(req, res, next)
-  //   .then(data => {
-  //     res.status(200).redirect('/trip/start');
-  //   })
-  // // if the user is already logged in, check to make sure they have less than three contacts, add their new contact, and then redirect to contacts page
-  // } else {
-  //   checkForContacts(req, res, next)
-  //   .then(contactArray => {
-  //     if(!contactArray){
-  //       console.log('YOU HAVE MORE THAN THREE CONTACTS MOTHERFUCKER')
-  //       res.status(400).send('Sorry! You can only have three contats.')
-  //     } else {
-  //       createNewContact(req, res, next)
-  //       .then(data => {
-  //           res.status(200).redirect('/contacts');
-  //       })
-  //       .catch(err => {
-  //         next(err);
-  //       })
-  //     }
-  //   })
 }
 
 // List all of a user's contacts
