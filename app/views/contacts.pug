@@ -16,6 +16,12 @@ block content
               i.material-icons(id=contact.id) delete
     else
       h4.red.lighten-3 You don't have any emergency contacts. You won't be able to start a new trip until you add at least one contact. 
-  a(href='contacts/new') 
-    button.full-size-btn.btn.amber.lighten-1 Add New Contact
+  
+  if contactArray.length < 3
+    a(href='contacts/new') 
+      button.full-size-btn.btn.amber.lighten-1 Add New Contact
+  else
+    h4.red.lighten-3 You've reached the maximum of three emergency contacts. To add a new one, please delete one of your current contacts.
+
+
 

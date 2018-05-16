@@ -3,7 +3,7 @@ block content
 
   h3 Who should we text if you're in trouble?
   p.flow-text You can have a maximum of three emergency contacts.
-  form(name="emergency-contacts" method="post" action="/register/contacts")
+  form(name="emergency-contacts" method="post" action= registration?"/register/contacts":"/contacts/new")
     label(for="name") Name
     input.form-input(name="name" type="text" required)
     label(for="phone_number") Phone Number

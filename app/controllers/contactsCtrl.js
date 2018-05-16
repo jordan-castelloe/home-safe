@@ -2,27 +2,43 @@
 
 // Called on GET request to register/contacts
 module.exports.displayContactsForm = (req, res, next) => {
-  res.render('add-emergency-contact');
+  let registration = req.route.path === '/register/contacts' ? true : false;
+  res.render('add-emergency-contact', {registration});
+}
+
+const createNewContact = (req, res, next) => {
+  const { Emergency_Contact } = req.app.get("models");
+  return new Promise((resolve, reject) => {
+    const newContact = {
+      name: req.body.name,
+      phone_number: req.body.phone_number,
+      user_id: req.user.id
+    }
+    Emergency_Contact.create(newContact)
+    .then((data) => {
+      resolve(data);
+    })
+    .catch(err => {
+      next(err);
+    })
+  })
 }
 
 // Called on a POST request to register/ contacts (i.e. when the user clicks 'Add' to add a new emergency contact)
 module.exports.addEmergencyContacts = (req, res, next) => {
   const { Emergency_Contact } = req.app.get("models");
-
-  const newContact = {
-    name: req.body.name,
-    phone_number: req.body.phone_number,
-    user_id: req.user.id
-  }
-  Emergency_Contact.create(newContact)
-    .then(() => {
-      res.redirect('/trip');
-    })
-    .catch(err => {
-      console.log(err);
-      // TODO: add helpful error message
-      // next(err);
-    })
+  const path = req.route.path;
+  createNewContact(req, res, next)
+  .then(data => {
+    if(path === '/register/contacts'){
+      res.status(200).redirect('/trip/start');
+    } else {
+      res.status(200).redirect('/contacts');
+    }
+  })
+  .catch(err => {
+    next(err);
+  })
 }
 
 // List all of a user's contacts
