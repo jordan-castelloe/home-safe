@@ -114,9 +114,6 @@ const testLocation = () => {
   }
 }
 
-// GEOLOCATION WORKS BUT IT THINKS THAT THE TIMER IS ALWAYS TIMED OUT
-// IT DOES NOT FACTOR IN EMERGENCY CODE
-
 const sendTexts = (trip) => {
   $.ajax({
     url: `/trip/send-texts`,
@@ -275,3 +272,7 @@ $('#geolocation').change(() => {
     })
   }
 })
+
+//TODO: 
+// - Refactor geolocation functions
+// - Organize order of operations so it makes sense again
