@@ -101,7 +101,7 @@ const getCurrentLocation = () => {
   })
 }
 
-// Prints coordiantes to the dom to see how long it takes
+// Prints user's coordiantes to the dom to see how long it takes
 const testLocation = () => {
   if(!navigator.geolocation){
     $('#testLocation').text(`Sorry! Your browser doesn't support geolocation.`);
@@ -113,6 +113,9 @@ const testLocation = () => {
     })
   }
 }
+
+// GEOLOCATION WORKS BUT IT THINKS THAT THE TIMER IS ALWAYS TIMED OUT
+// IT DOES NOT FACTOR IN EMERGENCY CODE
 
 const sendTexts = (trip) => {
   $.ajax({
@@ -132,14 +135,19 @@ const sendTexts = (trip) => {
 
 
 // Called if user enters emergency passcode OR if the timer finishes without a safecode response
+// Checks to see if the user asked for geolocation or not
 const alertContacts = () => {
-  getCurrentLocation()
-  .then(trip=> {
-    sendTexts(trip)
-  })
-  .catch(err => {
-    console.log(err);
-  })
+  if($('#geolocation').is(':checked')){
+    getCurrentLocation()
+      .then(trip => {
+        sendTexts(trip)
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  } else {
+    sendTexts(trip);
+  } 
 }
 
 // Accepts number of milleseconds remaining, converts to hours, minutes, etc.
