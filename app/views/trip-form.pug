@@ -9,28 +9,44 @@ block content
     label(for="return-time") I should be back by 
     input.form-input(id="return-time" name="return-time" type="time" required).
 
+    .card
+      .card-content
+        h5.cardTitle Geolocation
+        p.flow-text If you run into trouble, we can use geolocation to send your exact coordinates to your emergency contacts. This feature requires a fair amount of internet or cell service and might be very slow. If your signal is low, it's probably better to opt out of geolocation.
+  
+        button.btn.amber.lighten-1#testLocationBtn See How Long Geolocation Takes
+        p.flow-text#testLocation 
+        input#geolocation(type="checkbox")
+        label(for="geolocation") Yes, I want to use Geolocation.
+
     .sample-texts
       .card
         .card-content
-          h4.card-title Here's what we'll text your friends if you don't make it back by your return time:
-          p.flow-text.sample-msg Hi there! Name went to location and didn't make it back in time. Would you mind checking up on them?
-            span.gps  Their last known location is location location.
+          h5 Here's what we'll text your friends if you don't make it back by your return time:
+          p.flow-text.sample-msg Hi, #{first_name} went  
+            span.activitySample _______________________
+            span.urgency and thought they'd be back by 
+            span.returnTimeSample ________________________
+            span.checkIn Would you mind checking in on them?
+            span.gps
+            
 
-      .card
-        .card-content
-          h4.card-title Here's what we'll text them if you enter your emergency code:
-          p.flow-text.sample-msg Hi there! Name went to location and entered their emergency code, which means might be in trouble. Would you mind checking up on them?
-            span.gps  Their last known location is location location.
+          h5 Here's what we'll text them if you enter your emergency code:
+          p.flow-text.sample-msg Hi, #{first_name} went to 
+            span.activitySample _______________________
+            span.urgency and entered their emergency code, which means they might be in trouble. Would you mind checking up on them?
+            span.gps
+
     button.full-size-btn.btn.amber.lighten-1#start-trip Start Trip
   
   .trip-in-progress
-    h3 Be safe! Make good choices!
+    h4#alert Be safe! Make good choices!
     p#error
     h5.timer
     .safe-code-input
       label(for="safe-code") When you get back, please enter your safe code.
       input.form-input.text(id="safe-code" name="safe-code" type="text" required)
-    button.full-size-btn.btn.amber.lighten-1#safe-code-btn I'm back!
+    button.full-size-btn.btn.amber.lighten-1#safe-code-btn OK
   
     a(href='/trip/start')
       button.full-size-btn.btn.amber.lighten-1#start-over Start Another Trip

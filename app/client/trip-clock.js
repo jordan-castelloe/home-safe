@@ -6,6 +6,7 @@ $('#start-over').hide();
 
 
 
+
 // ------------------- TRIP TIMER LOGIC ------------------- //
 
 // Process to build the timer:
@@ -31,7 +32,6 @@ const getTrip = () => {
     activity: $('#activity').val(),
     returnTime: $('#return-time').val()
   }
-  localStorage.setItem("trip", JSON.stringify(trip));
   return trip;
 }
 
@@ -64,7 +64,7 @@ const checkSafeCode = code => {
   return new Promise((resolve, reject) => {
     getUserCodes()
       .then(({ safe_code, emergency_code }) => {
-        let safeCodeStatus = {};
+        // let safeCodeStatus = {};
         if (code !== safe_code && code !== emergency_code) {
           reject({
             message: "We don\'t recognize that code. Please try again.",
@@ -76,6 +76,7 @@ const checkSafeCode = code => {
             sendText: false
           })
         } else if (code === emergency_code) {
+          trip.emergencyCode = true;
           resolve({
             message: "Hang tight, we're notifying your emergency contacts.",
             sendText: true
@@ -101,6 +102,19 @@ const getCurrentLocation = () => {
   })
 }
 
+// Prints user's coordiantes to the dom to see how long it takes
+const testLocation = () => {
+  if(!navigator.geolocation){
+    $('#testLocation').text(`Sorry! Your browser doesn't support geolocation.`);
+    $('#testLocationBtn').prop("disabled", true);
+  } else {
+    $('#testLocation').text(`Fetching your location! Please stand by.`);
+    navigator.geolocation.getCurrentPosition(position => {
+      $('#testLocation').text(`Your current coordinates are ${position.coords.latitude} lat, ${position.coords.longitude} long`);
+    })
+  }
+}
+
 const sendTexts = (trip) => {
   $.ajax({
     url: `/trip/send-texts`,
@@ -108,27 +122,30 @@ const sendTexts = (trip) => {
     data: trip
   })
   .done(successMsg => {
-    $('.timer').text(successMsg);
+    $('#alert').text(successMsg);
     return successMsg
   })
   .fail(err => {
     console.log('could not send texts', err);
-    
     return err;
   })
 }
 
 
 // Called if user enters emergency passcode OR if the timer finishes without a safecode response
+// Checks to see if the user asked for geolocation or not
 const alertContacts = () => {
-  trip = JSON.parse(localStorage.getItem("trip"));
-  getCurrentLocation()
-  .then(trip=> {
-    sendTexts(trip)
-  })
-  .catch(err => {
-    console.log(err);
-  })
+  if($('#geolocation').is(':checked')){
+    getCurrentLocation()
+      .then(trip => {
+        sendTexts(trip)
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  } else {
+    sendTexts(trip);
+  } 
 }
 
 // Accepts number of milleseconds remaining, converts to hours, minutes, etc.
@@ -160,10 +177,13 @@ const displayTimer = ({hours, minutes, seconds, milleseconds}) => {
 
 
 // accepts the setInterval object, the message we want to print to the DOM when the timer is over, and a boolean that tells us whether or not to text emergency contacts
-const stopTimer = (timer, { message, sendText }) => {
+const stopTimer = (timer, { message, sendText, emergencyCode }) => {
   clearInterval(timer);
-  $('.timer').text(message);
+  $('#alert').text(message);
   sendText ? alertContacts() : homeSafe(); 
+  $('#safe-code-btn').remove();
+  $('.timer').remove();
+  $('#start-over').show();
 }
 
 
@@ -189,7 +209,7 @@ const startTimer = () => {
     if (millesecondsRemaining === 0) {
       let safeCodeStatus = {
         message: 'You didn\'t make it back in time! Hope you\'re okay. We let your friends know for you.',
-        sendText: true
+        sendText: true,
       }
       stopTimer(timer, safeCodeStatus);
     }
@@ -230,5 +250,33 @@ const endTrip = () => {
   })
 }
 
+$('#testLocationBtn').click(testLocation)
 $('#safe-code-btn').click(endTrip);
 $('#start-trip').click(startTrip);
+
+
+// Building out sample messages
+$('#activity').keyup(() => {
+  $('.activitySample').text(`${$('#activity').val()} `);
+})
+
+$('#return-time').keyup(() => {
+  let returnTime = getReturnTime();
+  returnTime = returnTime.format('hh:mm A')
+  $('.returnTimeSample').text(` ${returnTime}. `);
+})
+
+$('#geolocation').change(() => {
+  if (!navigator.geolocation) {
+    $('#testLocation').text(`Sorry! Your browser doesn't support geolocation.`);
+    $('#testLocationBtn').prop("disabled", true);
+  } else {
+    navigator.geolocation.getCurrentPosition(position => {
+      $('.gps').text(` Their last known location is: ${position.coords.latitude} lat, ${position.coords.longitude} long.`);
+    })
+  }
+})
+
+//TODO: 
+// - Refactor geolocation functions
+// - Organize order of operations so it makes sense again
