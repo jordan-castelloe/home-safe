@@ -5,7 +5,10 @@
 }
 
 .container{
-  margin: 4rem auto;
+  overflow: scroll;
+  height: 76vh;
+  margin-top: 12vh;
+  margin-bottom: 12vh;
 }
 
 p{
@@ -42,8 +45,10 @@ input.form-input{
 }
 
 /* NavBar */
-nav.navbar{
-  height: 12rem;
+#navbar{
+  top:0;
+  height: 10vh;
+  position: fixed;
 }
 
 nav i.nav-item{
@@ -119,7 +124,7 @@ nav .center{
   bottom: 0;
   position: fixed;
   width: 100vw;
-  height: 10rem;
+  height: 10vh;
   padding: 0;
   display: flex;
   align-items: center;
