@@ -43,6 +43,11 @@ app.use(flash());
 app.use(routes);
 
 // TODO: add error handling here
+app.use((err, req, res, next) => {
+  err = err || new Error("Internal Server Error");
+  res.status(err.status || 500);
+  res.send({ error: err.message });
+});
 
 const port = process.env.PORT || 8080;
 app.listen(port, () => {

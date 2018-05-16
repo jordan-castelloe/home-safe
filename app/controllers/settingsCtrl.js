@@ -7,7 +7,11 @@ module.exports.displaySettings = (req, res, next) => {
     .then(({ dataValues }) => {
       res.status(200).render('settings', dataValues);
     })
-    .catch(err => res.status(404));
+    .catch(err => {
+      const error = new Error("Could not get the user's account information.");
+      err.status = 400;
+      next(err);
+    });
 };
 
 module.exports.displaySettingsForm = (req, res, next) => {
@@ -16,7 +20,11 @@ module.exports.displaySettingsForm = (req, res, next) => {
   .then(({ dataValues }) => {
     res.status(200).render('edit-settings', dataValues);
   })
-  .catch(err => res.status(404));
+  .catch(err => {
+    const error = new Error("Could not get the user's account information");
+    err.status = 400;
+    next(err);
+  });
 }
 
 module.exports.editSettings = (req, res, next) => {
