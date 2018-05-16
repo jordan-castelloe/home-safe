@@ -133,7 +133,7 @@ const sendTexts = (trip) => {
 // Checks to see if the user asked for geolocation or not
 const alertContacts = () => {
   if($('#geolocation').is(':checked')){
-    getCurrentLocation()
+    getCurrentPosition()
       .then(({latitude, longitude}) => {
         trip.lat = latitude;
         trip.long = longitude
