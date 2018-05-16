@@ -18,10 +18,7 @@ const validator = {
 
 // Check to see if we should enable the submit button on registration screen
 const checkSubmitBtn = ({safeCode, eCode, duplicates}) => {
-  console.log('VALIDATOR', validator);
-  console.log('safeCode', safeCode, 'eCode', eCode, 'duplicates', duplicates)
   if(safeCode.valid && safeCode.matching && eCode.valid && eCode.matching && !duplicates){
-    console.log('ready to submit')
     $('#submitBtn').prop('disabled', false);
   } else {
     $('#submitBtn').prop('disabled', true);
