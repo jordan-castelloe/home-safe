@@ -1,7 +1,7 @@
 'use strict';
 
 // disable buttons when page loads
-$('#submitBtn').prop('disabled', true);
+// $('#submitBtn').prop('disabled', true);
 
 // We'll use this object to keep track of whether or not we have valid inputs. If all the values are true, then the submit button will be enabled.
 const validator = {
@@ -18,7 +18,10 @@ const validator = {
 
 // Check to see if we should enable the submit button on registration screen
 const checkSubmitBtn = ({safeCode, eCode, duplicates}) => {
+  console.log('VALIDATOR', validator);
+  console.log('safeCode', safeCode, 'eCode', eCode, 'duplicates', duplicates)
   if(safeCode.valid && safeCode.matching && eCode.valid && eCode.matching && !duplicates){
+    console.log('ready to submit')
     $('#submitBtn').prop('disabled', false);
   } else {
     $('#submitBtn').prop('disabled', true);
@@ -61,7 +64,6 @@ const confirmCodes = (safeCode, confirmation, messageDiv, codeType) => {
     validator[codeType].matching = true;
   }
   messageDiv.text(message);
-  
 }
 
 // Check to make sure emergency code and safe codes are different
@@ -106,6 +108,7 @@ $('#eCodeConfirm').keyup(() => {
   let confirmation = $('#eCodeConfirm').val();
   let messageDiv = $('#eConfirmationMsg');
   confirmCodes(eCode, confirmation, messageDiv, 'eCode');
+  checkSubmitBtn(validator);
 });
 
 // EDIT SETTINGS VIEW
