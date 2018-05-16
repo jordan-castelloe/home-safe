@@ -12,9 +12,9 @@ block content
     .card
       .card-content
         h5.cardTitle Geolocation
-        p.flow-text If you run into trouble, we can use geolocation to send your exact coordinates to your emergency contacts. This feature requires a fair amount of internet or cell service and might be very slow. If your signal is low, it's probably better to opt out of geolocation.
+        p.flow-text#geolocation-text If you run into trouble, we can use geolocation to send your exact coordinates to your emergency contacts. This feature requires a fair amount of internet or cell service and might be very slow. If your signal is low, it's probably better to opt out of geolocation.
   
-        button.btn.amber.lighten-1#testLocationBtn See How Long Geolocation Takes
+        button.btn.amber.lighten-1#testLocationBtn Test Geolocation
         p.flow-text#testLocation 
         input#geolocation(type="checkbox")
         label(for="geolocation") Yes, I want to use Geolocation.
@@ -24,16 +24,16 @@ block content
         .card-content
           h5 Here's what we'll text your friends if you don't make it back by your return time:
           p.flow-text.sample-msg Hi, #{first_name} went  
-            span.activitySample _______________________
+            span.activitySample ________
             span.urgency and thought they'd be back by 
-            span.returnTimeSample ________________________
+            span.returnTimeSample ________
             span.checkIn Would you mind checking in on them?
             span.gps
             
 
           h5 Here's what we'll text them if you enter your emergency code:
           p.flow-text.sample-msg Hi, #{first_name} went to 
-            span.activitySample _______________________
+            span.activitySample ________
             span.urgency and entered their emergency code, which means they might be in trouble. Would you mind checking up on them?
             span.gps
 
