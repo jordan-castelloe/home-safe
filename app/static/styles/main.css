@@ -114,6 +114,20 @@ nav .center{
 }
 
 
+/* Footer */
+#footer-nav{
+  bottom: 0;
+  position: fixed;
+  width: 100vw;
+  height: 10rem;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
 @media only screen and (min-width: 768px) {
     /* For desktop: */
  
