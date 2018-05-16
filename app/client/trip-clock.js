@@ -253,8 +253,25 @@ $('#testLocationBtn').click(testLocation)
 $('#safe-code-btn').click(endTrip);
 $('#start-trip').click(startTrip);
 
-$('#activity').keyup(() => {
 
+// Building out sample messages
+$('#activity').keyup(() => {
+  $('.activitySample').text(`${$('#activity').val()} `);
 })
 
-$('#')
+$('#return-time').keyup(() => {
+  let returnTime = getReturnTime();
+  returnTime = returnTime.format('hh:mm A')
+  $('.returnTimeSample').text(` ${returnTime}. `);
+})
+
+$('#geolocation').change(() => {
+  if (!navigator.geolocation) {
+    $('#testLocation').text(`Sorry! Your browser doesn't support geolocation.`);
+    $('#testLocationBtn').prop("disabled", true);
+  } else {
+    navigator.geolocation.getCurrentPosition(position => {
+      $('.gps').text(` Their last known location is: ${position.coords.latitude} lat, ${position.coords.longitude} long.`);
+    })
+  }
+})
