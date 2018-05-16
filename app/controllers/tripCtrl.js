@@ -16,7 +16,9 @@ module.exports.displayTripScreen= (req, res, next) => {
     res.render('start-trip', { numberOfContacts })
   })
   .catch(err => {
-    console.log('Err', err);
+    const error = new Error("Could not get the user's emergency contacts in displayTripScreen to make sure they have at least 1.");
+    err.status = 400;
+    next(err);
   })
 }
 
@@ -32,7 +34,9 @@ module.exports.getUserCodes = (req, res, next) => {
     res.status(200).send({ safe_code, emergency_code });
   })
   .catch(err => {
-    console.log('Err', err);
+    const error = new Error("Could not find the user's safe code and emergency code.");
+    err.status = 400;
+    next(err);
   })
 }
 
@@ -73,7 +77,8 @@ module.exports.sendTexts= (req, res, next) => {
     res.status(200).send(successMsg);
   })
   .catch(err => {
-    console.log(err);
+    const error = new Error(`Could not send texts: ${err}`);
+    err.status = 400;
     next(err);
   })
 }

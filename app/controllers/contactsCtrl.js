@@ -19,6 +19,8 @@ const createNewContact = (req, res, next) => {
       resolve(data);
     })
     .catch(err => {
+      const error = new Error("Could not create a new contact.");
+      err.status = 400;
       next(err);
     })
   })
@@ -54,7 +56,9 @@ module.exports.displayContacts = (req, res, next) => {
     res.render('contacts', { contactArray })
   })
   .catch(err => {
-    console.log('Err', err); 
+    const error = new Error("Could not get the user's contacts.");
+    err.status = 400;
+    next(err);
   })
 }
 
@@ -65,7 +69,9 @@ module.exports.displayEditContactForm = (req, res, next) => {
     res.render('edit-emergency-contact', { contact } )
   })
   .catch(err => {
-    console.log('err!', err);
+    const error = new Error("Could not find this emergency contact.");
+    err.status = 400;
+    next(err);
   })
 }
 
@@ -80,7 +86,8 @@ module.exports.editContact = (req, res, next) => {
       res.status(200).redirect('/contacts');
     })
     .catch(err => {
-      console.log(err);
+      const error = new Error("Could not update this emergency contact.");
+      err.status = 400;
       next(err);
     })
 
@@ -92,6 +99,10 @@ module.exports.deleteContact = (req, res, next) => {
     .then(data => {
       res.status(200).send('OK');
     })
-    .catch(err => next(err));
+    .catch(err => {
+      const error = new Error("Could not delete contat");
+      err.status = 400;
+      next(err);
+    });
 }
 
