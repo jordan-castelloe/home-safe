@@ -3,7 +3,6 @@
 // Called on GET request to register/contacts
 module.exports.displayContactsForm = (req, res, next) => {
   let registration = req.route.path === '/register/contacts' ? true : false;
-  console.log('!!!!!! are we registering??', {registration});
   res.render('add-emergency-contact', {registration});
 }
 

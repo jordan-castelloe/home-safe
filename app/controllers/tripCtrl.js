@@ -1,8 +1,23 @@
 'use strict';
 
 // Renders the splash page with the "start trip" button (called immediately after login)
+// Checks to see how many emergency contacts you have then passes it into pug template. 
+// The pug template won't let you start the trip if you have no emergency contacts
 module.exports.displayTripScreen= (req, res, next) => {
-  res.render('start-trip');
+  const { Emergency_Contact } = req.app.get("models");
+  Emergency_Contact.findAll({
+    raw: true,
+    where: {
+      user_id: req.user.id
+    }
+  })
+  .then(contactArray => {
+    let numberOfContacts = contactArray.length;
+    res.render('start-trip', { numberOfContacts })
+  })
+  .catch(err => {
+    console.log('Err', err);
+  })
 }
 
 // Displays the form to start a new trip, called when the user clicks on the "start trip button" in start-trip.pug

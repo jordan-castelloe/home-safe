@@ -11,5 +11,10 @@ block content
     li If you don't make it home by your return time, I'll text your emergency contacts and let them know.
     li If you enter your emergency code while you're out, I'll text your emergency contacts and tell them that you might be in trouble.
 
-  a(href="/trip/start")
-    button.full-size-btn.btn.amber.lighten-1 I'm Going Out!
+  if numberOfContacts > 0 
+    a(href="/trip/start")
+      button.full-size-btn.btn.amber.lighten-1 I'm Going Out!
+  else 
+    h4.red.lighten-3 You don't have any emergency contacts. Add at least one to start a trip.
+    a(href="/contacts/new")
+      button.full-size-btn.btn.amber.lighten-1 Add A Contact
