@@ -40,21 +40,28 @@ module.exports.getUserCodes = (req, res, next) => {
   })
 }
 
-// TODO: Send a different text msg if they used their emergency code
+const buildMessage = ({ activity, lat, long, emergencyCode, returnTime }, contactName, userName) => {
+  const greeting = `Hi ${contactName}, your friend ${userName} went ${activity}.`;
+  const urgency = emergencyCode === true ? `They entered their emergency code, which means they might be in trouble.` : `They thought they'd be back by ${returnTime} but they haven't checked in yet.`;
+  const location = lat && long ? `Their last known location is: ${lat} lat, ${long} long.` : ``;
+  const textMessage = `${greeting} ${urgency} ${location}  Would you mind checking up on them?`
+  return textMessage;
+}
 
 const sendToTwilio = (contactArray, req) => {
   const twilio = require('twilio');
   const client = new twilio(process.env.TWILIO_ACCOUNT_SID,
     process.env.TWILIO_AUTH_TOKEN);
-  const { activity, lat, long } = req;
+  const { activity, lat, long, emergencyCode } = req;
   return Promise.all(
     contactArray.map(contact => {
-      let message = `Hi ${contact.name}, your friend ${contact.first_name} went ${activity} and hasn't made it back in time. Their last known location is: ${lat} lat, ${long} long. Would you mind checking in on them?`
-      return client.messages.create({
-        body: message,
-        to: contact.phone_number,
-        from: process.env.TWILIO_NUMBER
-      })
+      let message = buildMessage(req, contact.name, contact.first_name);
+      console.log('!!!!!!!!!!!!!!!!!!!!!!!!! MESSAGE', message);
+      // return client.messages.create({
+      //   body: message,
+      //   to: contact.phone_number,
+      //   from: process.env.TWILIO_NUMBER
+      // })
     })
   )
 }

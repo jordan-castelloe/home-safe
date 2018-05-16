@@ -31,7 +31,6 @@ const getTrip = () => {
     activity: $('#activity').val(),
     returnTime: $('#return-time').val()
   }
-  localStorage.setItem("trip", JSON.stringify(trip));
   return trip;
 }
 
@@ -64,7 +63,7 @@ const checkSafeCode = code => {
   return new Promise((resolve, reject) => {
     getUserCodes()
       .then(({ safe_code, emergency_code }) => {
-        let safeCodeStatus = {};
+        // let safeCodeStatus = {};
         if (code !== safe_code && code !== emergency_code) {
           reject({
             message: "We don\'t recognize that code. Please try again.",
@@ -76,6 +75,7 @@ const checkSafeCode = code => {
             sendText: false
           })
         } else if (code === emergency_code) {
+          trip.emergencyCode = true;
           resolve({
             message: "Hang tight, we're notifying your emergency contacts.",
             sendText: true
@@ -102,6 +102,7 @@ const getCurrentLocation = () => {
 }
 
 const sendTexts = (trip) => {
+  console.log('trip', trip);
   $.ajax({
     url: `/trip/send-texts`,
     type: 'POST',
@@ -113,7 +114,6 @@ const sendTexts = (trip) => {
   })
   .fail(err => {
     console.log('could not send texts', err);
-    
     return err;
   })
 }
@@ -121,7 +121,6 @@ const sendTexts = (trip) => {
 
 // Called if user enters emergency passcode OR if the timer finishes without a safecode response
 const alertContacts = () => {
-  trip = JSON.parse(localStorage.getItem("trip"));
   getCurrentLocation()
   .then(trip=> {
     sendTexts(trip)
@@ -160,7 +159,7 @@ const displayTimer = ({hours, minutes, seconds, milleseconds}) => {
 
 
 // accepts the setInterval object, the message we want to print to the DOM when the timer is over, and a boolean that tells us whether or not to text emergency contacts
-const stopTimer = (timer, { message, sendText }) => {
+const stopTimer = (timer, { message, sendText, emergencyCode }) => {
   clearInterval(timer);
   $('.timer').text(message);
   sendText ? alertContacts() : homeSafe(); 
@@ -187,9 +186,11 @@ const startTimer = () => {
 
     // check if the timer gets down to zero and, if so, clear out the interval
     if (millesecondsRemaining === 0) {
+      trip.emergencyCode = false;
+      console.log('trip when the timer expires', trip);
       let safeCodeStatus = {
         message: 'You didn\'t make it back in time! Hope you\'re okay. We let your friends know for you.',
-        sendText: true
+        sendText: true,
       }
       stopTimer(timer, safeCodeStatus);
     }
