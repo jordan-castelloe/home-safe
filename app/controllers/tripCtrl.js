@@ -56,12 +56,11 @@ const sendToTwilio = (contactArray, req) => {
   return Promise.all(
     contactArray.map(contact => {
       let message = buildMessage(req, contact.name, contact.first_name);
-      console.log('!!!!!!!!!!!!!!!!!!!!!!!!! MESSAGE', message);
-      // return client.messages.create({
-      //   body: message,
-      //   to: contact.phone_number,
-      //   from: process.env.TWILIO_NUMBER
-      // })
+      return client.messages.create({
+        body: message,
+        to: contact.phone_number,
+        from: process.env.TWILIO_NUMBER
+      })
     })
   )
 }

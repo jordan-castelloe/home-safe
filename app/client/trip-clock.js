@@ -102,7 +102,6 @@ const getCurrentLocation = () => {
 }
 
 const sendTexts = (trip) => {
-  console.log('trip', trip);
   $.ajax({
     url: `/trip/send-texts`,
     type: 'POST',
@@ -187,7 +186,6 @@ const startTimer = () => {
     // check if the timer gets down to zero and, if so, clear out the interval
     if (millesecondsRemaining === 0) {
       trip.emergencyCode = false;
-      console.log('trip when the timer expires', trip);
       let safeCodeStatus = {
         message: 'You didn\'t make it back in time! Hope you\'re okay. We let your friends know for you.',
         sendText: true,
