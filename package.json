@@ -9,7 +9,7 @@
   },
   "scripts": {
     "db:gen": "node app/db/build-db.js",
-    "start": "nodemon app/app.js",
+    "start": "node app/app.js",
     "test": "mocha -R list --watch",
     "heroku-postbuild": "npm install --production"
   },
