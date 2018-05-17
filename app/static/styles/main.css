@@ -132,14 +132,20 @@ nav .center{
 }
 
 
-
+/* For desktop: */
  @media screen 
   and (min-device-width: 1200px) 
   and (max-device-width: 1600px)  { 
-    /* For desktop: */
+   
+  .container{
+    padding: 2vh 10vw;
+    width: 100vw;
+  }
+
   h1{
     font-size: 4rem;
   }
+
   h3{
     font-size: 3rem;
   }
@@ -157,14 +163,14 @@ nav .center{
   }
 
   .full-size-btn{
-    margin-top: 6vh;
+    margin: 6vh auto;
     width: 80%;
-    height: 4rem;
-    font-size: 2rem;
+    height: 3.2rem;
+    font-size: 1.3rem;
   }
 
   #navbar{
-    height: 8vh;
+    height: 11vh;
   }
 
   nav i.nav-item{
@@ -233,6 +239,10 @@ nav .center{
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+  footer > h4 {
+    font-size: 0.9rem;
   }
 
 } 
