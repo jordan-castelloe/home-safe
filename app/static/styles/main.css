@@ -133,8 +133,106 @@ nav .center{
 
 
 
-@media only screen and (min-width: 768px) {
+ @media screen 
+  and (min-device-width: 1200px) 
+  and (max-device-width: 1600px)  { 
     /* For desktop: */
- 
+  h1{
+    font-size: 4rem;
+  }
+  h3{
+    font-size: 3rem;
+  }
+  p{
+    font-size: 1rem;
+  }
+  label{
+    font-size: 1rem;
+    line-height: 2rem;
+  }
+  input.form-input{
+    font-size: 1rem;
+    line-height: 2rem;
+    height: 4vh;
+  }
 
-}
+  .full-size-btn{
+    margin-top: 6vh;
+    width: 80%;
+    height: 4rem;
+    font-size: 2rem;
+  }
+
+  #navbar{
+    height: 8vh;
+  }
+
+  nav i.nav-item{
+    font-size: 3rem;
+  }
+
+  /* Tutorial */
+  .tutorial > li {
+    line-height: 3rem;
+    font-size: 1rem;
+  }
+
+  /* Trip Form*/
+  .sample-texts{
+    margin-top: 3rem;
+    font-size: 1rem;
+  }
+
+  .timer{
+    margin-top: 2rem;
+    font-size: 2rem;
+  }
+
+  .safe-code-input{
+    margin-top: 4rem;
+  }
+
+  #geolocation-text {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  #testLocationBtn {
+    margin: 3vh auto;
+    width: 45vw;
+    height: 3rem;
+    font-size: 1.2rem;
+  }
+
+  #geolocation, label[for=geolocation]{
+    font-size: 1rem;
+  }
+
+  /* Contacts */
+  .button-group{
+    margin: 2rem auto 1rem auto;
+    width: 8rem;
+  }
+
+  .button-group button{
+    width: 4rem;
+    height: 4rem;
+  }
+
+  .button-group button i{
+    font-size: 2rem
+  }
+
+  /* Footer */
+  #footer-nav{
+    bottom: 0;
+    position: fixed;
+    width: 100vw;
+    height: 8vh;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+} 
