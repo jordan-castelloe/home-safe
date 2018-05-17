@@ -13,11 +13,13 @@ html
       block content
       
   include partials/footer
+
     script(src='https://code.jquery.com/jquery-3.2.1.min.js')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js')
-  
+
     script
+      include ../../node_modules/nosleep.js/dist/NoSleep.js
       include ../client/events.js
       include ../client/trip-clock.js
       include ../client/form-validation.js

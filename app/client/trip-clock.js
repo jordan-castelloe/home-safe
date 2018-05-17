@@ -4,9 +4,6 @@
 $('.trip-in-progress').hide();
 $('#start-over').hide();
 
-
-
-
 // ------------------- TRIP TIMER LOGIC ------------------- //
 
 // Process to build the timer:
@@ -25,6 +22,7 @@ $('#start-over').hide();
 // Declare an empty variable for the setInterval obj so it can be cleared from anywhere
 let timer;
 let trip;
+const noSleep = new NoSleep();
 
 
 // Grab and return the trip values, store in local storage
@@ -183,6 +181,7 @@ const stopTimer = (timer, { message, sendText, emergencyCode }) => {
 
 // Starts the timer interval and clears it when the time remaining === 0
 const startTimer = () => {
+
   const returnTime = getReturnTime();
   timer = setInterval(() => {
 
@@ -229,11 +228,13 @@ const printError = (message) => {
 
 // ------------------- EVENT LISTENERS FOR STARTING AND ENDING A TRIP ------------------- //
 const startTrip = () => {
+  noSleep.enable(); // prevent the browser from going to sleep while the timer is going by playing a tiny mp4 video
   showTripProgress();
   startTimer();
 }
 
 const endTrip = () => {
+  noSleep.disable();
   checkSafeCode(+$("#safe-code").val())
   .then(safeCodeStatus => {
     stopTimer(timer, safeCodeStatus);
