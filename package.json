@@ -3,10 +3,15 @@
   "version": "1.0.0",
   "description": "A safe-call app that checks up on you when you're out and texts your friends if you don't home safely",
   "main": "app/app.js",
+  "engines": {
+    "node": "8.9.4",
+    "npm": "5.6.0"
+  },
   "scripts": {
     "db:gen": "node app/db/build-db.js",
-    "start": "nodemon app/app.js",
-    "test": "mocha -R list --watch"
+    "start": "node app/app.js",
+    "test": "mocha -R list --watch",
+    "heroku-postbuild": "npm install --production"
   },
   "keywords": [],
   "author": "Jordan Castelloe",
